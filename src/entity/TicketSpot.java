@@ -9,14 +9,13 @@ public class TicketSpot extends Building {
 
 	@Override
 	public void passby(Player p) {
-		// TODO Auto-generated method stub
-
+		return;
 	}
 
 	@Override
 	public void stay(Player p) {
-		// TODO Auto-generated method stub
-
+		int rand = (((int) (Math.random() * 10)) + 1) * 10;
+		p.setTickets(p.getTickets() + rand);
 	}
 
 	@Override

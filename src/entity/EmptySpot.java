@@ -9,10 +9,12 @@ public class EmptySpot extends Building {
 
 	@Override
 	public void passby(Player p) {
+		return;
 	}
 
 	@Override
 	public void stay(Player p) {
+		return;
 	}
 
 	@Override
