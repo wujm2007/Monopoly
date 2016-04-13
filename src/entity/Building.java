@@ -7,5 +7,18 @@ public abstract class Building {
 
 	protected abstract void stay(Player p);
 
-	public abstract Player getOwner();
+	public Player getOwner() {
+		return null;
+	}
+
+	public String getOriginalIcon() {
+		return getIcon();
+	}
+
+	public abstract String getType();
+
+	public String getDescription() {
+		return "类型：" + getType();
+	}
+
 }

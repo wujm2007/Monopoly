@@ -38,7 +38,7 @@ public class Store extends Building {
 			});
 			IOHelper.showInfo("您拥有" + p.getTickets() + "点券。");
 			int index;
-			if (cards.get(index = IOHelper.InputInt("请输入您要购买的卡片编号: ") - 1) != null) {
+			if (((index = IOHelper.InputInt("请输入您要购买的卡片编号: ") - 1) >= 0) && (index < cards.size())) {
 				if (p.getTickets() >= cards.get(index).getPrice()) {
 					p.setTickets(p.getTickets() - cards.get(index).getPrice());
 					p.addCard(cards.get(index));
@@ -46,12 +46,15 @@ public class Store extends Building {
 				} else {
 					IOHelper.alert("点券不足。");
 				}
+			} else {
+				IOHelper.alert("编号错误。");
+				continue;
 			}
 		}
 	}
 
 	@Override
-	public Player getOwner() {
-		return null;
+	public String getType() {
+		return "道具店";
 	}
 }

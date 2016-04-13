@@ -6,10 +6,10 @@ import java.util.Collection;
 import dao.Game;
 
 public class Player {
-	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 5000;
+	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
 
 	private String name, icon, estateIcon;
-	private Collection<Card> cards = new ArrayList<Card>();
+	private ArrayList<Card> cards;
 	private int cash, tickets;
 	private BankAccount account;
 	private Map map;
@@ -74,6 +74,9 @@ public class Player {
 		this.isBroke = false;
 		this.map.getCell(0).addPlayer(this);
 		this.clockwise = true;
+		this.cards = new ArrayList<Card>();
+		this.addCard(new RoadBlock());
+		this.addCard(new ControlDice());
 	}
 
 	public String getName() {
@@ -88,8 +91,8 @@ public class Player {
 		this.account.setDeposit(m);
 	}
 
-	public Collection<Card> getCards() {
-		return cards;
+	public ArrayList<Card> getCards() {
+		return this.cards;
 	}
 
 	public void addCard(Card c) {
@@ -135,7 +138,7 @@ public class Player {
 		}
 	}
 
-	private void broke() {
+	public void broke() {
 		this.isBroke = true;
 	}
 
@@ -163,7 +166,6 @@ public class Player {
 	public int getAsset() {
 		int estatesValue = 0;
 		for (Estate e : getEstates()) {
-			System.out.println(e.getPrice());
 			estatesValue += e.getPrice();
 		}
 		return getCash() + getDeposit() + estatesValue;
@@ -179,5 +181,9 @@ public class Player {
 
 	public Game getGame() {
 		return getMap().getGame();
+	}
+
+	public boolean isClockWise() {
+		return this.clockwise;
 	}
 }

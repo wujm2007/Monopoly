@@ -18,8 +18,8 @@ public class EmptySpot extends Building {
 	}
 
 	@Override
-	public Player getOwner() {
-		return null;
+	public String getType() {
+		return "空地";
 	}
 
 }

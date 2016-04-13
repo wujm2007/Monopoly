@@ -47,8 +47,8 @@ public class CardSpot extends Building {
 	}
 
 	@Override
-	public Player getOwner() {
-		return null;
+	public String getType() {
+		return "道具点";
 	}
 
 }

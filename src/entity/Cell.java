@@ -3,6 +3,8 @@ package entity;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import dao.IOHelper;
+
 public class Cell {
 	private Map map;
 	private int position;
@@ -47,6 +49,10 @@ public class Cell {
 			return this.getPlayers().iterator().next().getIcon();
 	}
 
+	public String getOriginalIcon() {
+		return this.getBuilding().getOriginalIcon();
+	}
+
 	public Cell getNextCell() {
 		int nPosition = (this.getPosition() + 1) % map.getLength();
 		return map.getCell(nPosition);
@@ -84,6 +90,10 @@ public class Cell {
 
 	public void passby(Player player) {
 		getBuilding().passby(player);
+	}
+
+	public void printInfo() {
+		IOHelper.showInfo(getBuilding().getDescription());
 	}
 
 }

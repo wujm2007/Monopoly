@@ -19,8 +19,7 @@ public class TicketSpot extends Building {
 	}
 
 	@Override
-	public Player getOwner() {
-		return null;
+	public String getType() {
+		return "点券点";
 	}
-
 }

@@ -15,7 +15,7 @@ public class IOHelper {
 		else if (input.toUpperCase().equals("N"))
 			return false;
 		else {
-			System.out.println("Invalid input. Please try again.");
+			System.out.println("请输入Y或N。");
 			return InputYN(msg);
 		}
 	}
@@ -29,7 +29,7 @@ public class IOHelper {
 		try {
 			input = Integer.parseInt(strInput);
 		} catch (NumberFormatException e) {
-			alert("Invalid input.");
+			alert("请输入整数。");
 			return InputInt(msg);
 		}
 		return input;
@@ -46,7 +46,7 @@ public class IOHelper {
 		if (strInput.equals("b") || strInput.equals("s"))
 			rtn[0] = strInput;
 		else {
-			alert("Invalid input.");
+			alert("请按照操作码格式输入。");
 			return InputStockOp();
 		}
 		strInput = sc.next();
@@ -55,19 +55,19 @@ public class IOHelper {
 			input = Integer.parseInt(strInput);
 			rtn[1] = String.valueOf(input);
 		} catch (NumberFormatException e) {
-			alert("Invalid input.");
+			alert("请输入正确的股票代码。");
 			return InputStockOp();
 		}
 		strInput = sc.next();
 		try {
 			input = Integer.parseInt(strInput);
-			if (input < 0) {
-				alert("Invalid input.");
+			if (input <= 0) {
+				alert("请输入正确的股数。");
 				return InputStockOp();
 			}
 			rtn[2] = String.valueOf(input);
 		} catch (NumberFormatException e) {
-			alert("Invalid input.");
+			alert("请输入正确的股数。");
 			return InputStockOp();
 		}
 		return rtn;

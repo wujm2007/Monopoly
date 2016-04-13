@@ -11,10 +11,15 @@ import entity.*;
 
 public class Game {
 
-	private static final String STR_MAP = "0,0,0,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,4,7,7,7,7,7,6,6,6,7,7,7,7,7,0,0,0,0,0,1,0,0,0,0,0,5,0,0,0,0,0,0,3,0,0,0,0,0,0,2,0,0,0,0,0,4,7,6,6,6,5,5,1,5,5";
+	private static final String STR_MAP = "5水星街,3,7金星街,2,5火星街,4,7,7,7,7,7,6,6,6,7,7,7,7,7,5木星街,1,5土星街,5,6天王星街,3,6海王星街,2,5蔡伦路,4,7,6,6,6,5,5,1,5,5";
 	private static final int PLAYER_NUM = 2;
 	private Map map;
 	private StockMarket stockMarket;
+	private Date date;
+
+	public Date getDate() {
+		return date;
+	}
 
 	public StockMarket getStockMarket() {
 		return stockMarket;
@@ -28,6 +33,7 @@ public class Game {
 		this.initMap();
 		this.initPlayers();
 		this.stockMarket = new StockMarket();
+		this.date = new Date(this);
 	}
 
 	private Player[] players;
@@ -60,32 +66,39 @@ public class Game {
 		int count = 0;
 		for (String c : cells) {
 			switch (c) {
-			case "0":
-				map.addCell(new Cell(map, count, new Estate(1)));
-				break;
 			case "1":
-				map.addCell(new Cell(map, count, new Store()));
+				map.addCell(new Cell(map, count++, new Store()));
 				break;
 			case "2":
-				map.addCell(new Cell(map, count, new Bank()));
+				map.addCell(new Cell(map, count++, new Bank()));
 				break;
 			case "3":
-				map.addCell(new Cell(map, count, new NewsSpot()));
+				map.addCell(new Cell(map, count++, new NewsSpot()));
 				break;
 			case "4":
-				map.addCell(new Cell(map, count, new LotterySpot()));
+				map.addCell(new Cell(map, count++, new LotterySpot()));
 				break;
 			case "5":
-				map.addCell(new Cell(map, count, new CardSpot()));
+				map.addCell(new Cell(map, count++, new CardSpot()));
 				break;
 			case "6":
-				map.addCell(new Cell(map, count, new EmptySpot()));
+				map.addCell(new Cell(map, count++, new EmptySpot()));
 				break;
 			case "7":
-				map.addCell(new Cell(map, count, new TicketSpot()));
+				map.addCell(new Cell(map, count++, new TicketSpot()));
+				break;
+			default:
+				int num = 0;
+				try {
+					num = Integer.parseInt(c.substring(0, 1));
+				} catch (Exception e) {
+					break;
+				}
+				for (int i = 0; i < num; i++) {
+					map.addCell(new Cell(map, count++, new Estate(c.substring(1), i + 1, 1.0)));
+				}
 				break;
 			}
-			count++;
 		}
 	}
 
@@ -95,27 +108,8 @@ public class Game {
 		this.players[1] = new Player(this.map, "Player2", "■", "●");
 	}
 
-	// a primitive way to print the map
-	public void printMap() {
-		int length = map.getLength();
-		for (int i = 0; i < 20; i++)
-			System.out.print(map.getCell(i).getIcon());
-		for (int i = 20; i < 20 + (length - 40) / 2; i++) {
-			int j = length - 1 + 20 - i;
-			System.out.printf("\n%s                                     %s", map.getCell(i).getIcon(),
-					map.getCell(j).getIcon());
-		}
-		System.out.printf("\n");
-		for (int i = length - 1 - (length - 40) / 2; i > length - 1 - (length - 40) / 2 - 20; i--) {
-			System.out.print(map.getCell(i).getIcon());
-		}
-		System.out.printf("\n");
-	}
-
-	public void printPlayers() {
-		for (Player p : players) {
-			System.out.println(p.getName());
-		}
+	public void addDay() {
+		getDate().addDay();
 	}
 
 }

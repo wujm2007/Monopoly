@@ -19,7 +19,7 @@ public class Bank extends Building {
 		bankOperation(p);
 	}
 
-	public void payInterest(Player p) {
+	public static void payInterest(Player p) {
 		p.setDeposit((int) (p.getDeposit() * 1.1));
 	}
 
@@ -54,8 +54,8 @@ public class Bank extends Building {
 	}
 
 	@Override
-	public Player getOwner() {
-		return null;
+	public String getType() {
+		return "银行";
 	}
 
 }

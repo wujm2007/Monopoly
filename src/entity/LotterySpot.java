@@ -28,11 +28,6 @@ public class LotterySpot extends Building {
 		LotteryOperation(p);
 	}
 
-	@Override
-	public Player getOwner() {
-		return null;
-	}
-
 	private static void LotteryOperation(Player p) {
 		for (int i = 0; i < LOTTERY_NUM; i++) {
 			IOHelper.showInfo("No." + (i + 1) + ": " + (owner[i] == null ? "无人购买" : owner[i].getName()));
@@ -78,6 +73,11 @@ public class LotterySpot extends Building {
 		IOHelper.showInfo("中奖号码是" + (jackpot + 1));
 		if (owner[jackpot] != null) {
 			IOHelper.showInfo("恭喜玩家" + owner[jackpot].getName() + "中奖，奖金" + prize + "元");
+			if (owner[jackpot].isBroke()) {
+				IOHelper.showInfo("玩家" + owner[jackpot].getName() + "已破产，奖金" + prize + "元计入奖池。");
+				Arrays.fill(owner, null);
+				return;
+			}
 			owner[jackpot].setCash(owner[jackpot].getCash() + prize);
 			prize = 0;
 		} else {
@@ -88,6 +88,11 @@ public class LotterySpot extends Building {
 
 	public static int getJackpot() {
 		return jackpot;
+	}
+
+	@Override
+	public String getType() {
+		return "彩票点";
 	}
 
 }

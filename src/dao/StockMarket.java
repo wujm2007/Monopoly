@@ -132,6 +132,7 @@ public class StockMarket {
 					// buy stock
 					case "b":
 						if (p.getDeposit() + p.getCash() >= money) {
+							IOHelper.alert("购入股票：" + getStock(i).getName() + " " + n + "股，花费" + money + "元。");
 							if (p.getDeposit() >= money) {
 								p.setDeposit(p.getDeposit() - money);
 							} else {
@@ -140,7 +141,6 @@ public class StockMarket {
 								p.setCash(p.getCash() - money);
 							}
 							addStock(p, i, n);
-							IOHelper.alert("购入股票：" + getStock(i).getName() + " " + n + "股。");
 						} else {
 							IOHelper.alert("金钱不足。");
 						}
@@ -150,7 +150,7 @@ public class StockMarket {
 						if (getPlayerStock(p, i) >= n) {
 							reduceStock(p, i, n);
 							p.setDeposit(p.getDeposit() + money);
-							IOHelper.alert("卖出股票：" + getStock(i).getName() + " " + n + "股。");
+							IOHelper.alert("卖出股票：" + getStock(i).getName() + " " + n + "股，获得" + money + "元。");
 						} else {
 							IOHelper.alert("股票不足。");
 						}
