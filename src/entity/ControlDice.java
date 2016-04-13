@@ -14,4 +14,14 @@ public class ControlDice extends Card {
 		return 0;
 	}
 
+	@Override
+	public int getPrice() {
+		return 30;
+	}
+
+	@Override
+	public String getName() {
+		return "遥控骰子";
+	}
+
 }

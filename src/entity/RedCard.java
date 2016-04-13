@@ -17,4 +17,13 @@ public class RedCard extends Card {
 		return 0;
 	}
 
+	@Override
+	public int getPrice() {
+		return 80;
+	}
+
+	@Override
+	public String getName() {
+		return "红卡";
+	}
 }

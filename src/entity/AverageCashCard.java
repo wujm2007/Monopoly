@@ -13,4 +13,14 @@ public class AverageCashCard extends Card {
 		return 0;
 	}
 
+	@Override
+	public int getPrice() {
+		return 50;
+	}
+
+	@Override
+	public String getName() {
+		return "均富卡";
+	}
+
 }

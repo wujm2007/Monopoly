@@ -14,4 +14,14 @@ public class RoadBlock extends Card {
 		return 0;
 	}
 
+	@Override
+	public int getPrice() {
+		return 20;
+	}
+
+	@Override
+	public String getName() {
+		return "路障卡";
+	}
+
 }

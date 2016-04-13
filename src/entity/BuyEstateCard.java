@@ -20,4 +20,14 @@ public class BuyEstateCard extends Card {
 		return -1;
 	}
 
+	@Override
+	public int getPrice() {
+		return 50;
+	}
+
+	@Override
+	public String getName() {
+		return "购地卡";
+	}
+
 }

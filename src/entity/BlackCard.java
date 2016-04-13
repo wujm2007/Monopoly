@@ -17,4 +17,13 @@ public class BlackCard extends Card {
 		return 0;
 	}
 
+	@Override
+	public int getPrice() {
+		return 50;
+	}
+
+	@Override
+	public String getName() {
+		return "黑卡";
+	}
 }
