@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import entity.*;
 
@@ -12,6 +14,11 @@ public class Game {
 	private static final String STR_MAP = "0,0,0,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,4,7,7,7,7,7,6,6,6,7,7,7,7,7,0,0,0,0,0,1,0,0,0,0,0,5,0,0,0,0,0,0,3,0,0,0,0,0,0,2,0,0,0,0,0,4,7,6,6,6,5,5,1,5,5";
 	private static final int PLAYER_NUM = 2;
 	private Map map;
+	private StockMarket stockMarket;
+
+	public StockMarket getStockMarket() {
+		return stockMarket;
+	}
 
 	public Map getMap() {
 		return map;
@@ -20,6 +27,7 @@ public class Game {
 	public Game() {
 		this.initMap();
 		this.initPlayers();
+		this.stockMarket = new StockMarket();
 	}
 
 	private Player[] players;
@@ -30,9 +38,17 @@ public class Game {
 		return null;
 	}
 
+	public Collection<Player> getPlayers() {
+		Collection<Player> rtn = new ArrayList<Player>();
+		for (Player p : players) {
+			rtn.add(p);
+		}
+		return rtn;
+	}
+
 	// initializing the map with a given string
 	private void initMap() {
-		this.map = new Map();// a map of which the length is 74
+		this.map = new Map(this);// a map of which the length is 74
 		BufferedReader r = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(STR_MAP.getBytes())));
 		String line = null;
 		try {
@@ -45,28 +61,28 @@ public class Game {
 		for (String c : cells) {
 			switch (c) {
 			case "0":
-				map.addCell(new Cell(count, new Estate(1)));
+				map.addCell(new Cell(map, count, new Estate(1)));
 				break;
 			case "1":
-				map.addCell(new Cell(count, new Store()));
+				map.addCell(new Cell(map, count, new Store()));
 				break;
 			case "2":
-				map.addCell(new Cell(count, new Bank()));
+				map.addCell(new Cell(map, count, new Bank()));
 				break;
 			case "3":
-				map.addCell(new Cell(count, new NewsSpot()));
+				map.addCell(new Cell(map, count, new NewsSpot()));
 				break;
 			case "4":
-				map.addCell(new Cell(count, new LotterySpot()));
+				map.addCell(new Cell(map, count, new LotterySpot()));
 				break;
 			case "5":
-				map.addCell(new Cell(count, new CardSpot()));
+				map.addCell(new Cell(map, count, new CardSpot()));
 				break;
 			case "6":
-				map.addCell(new Cell(count, new EmptySpot()));
+				map.addCell(new Cell(map, count, new EmptySpot()));
 				break;
 			case "7":
-				map.addCell(new Cell(count, new TicketSpot()));
+				map.addCell(new Cell(map, count, new TicketSpot()));
 				break;
 			}
 			count++;

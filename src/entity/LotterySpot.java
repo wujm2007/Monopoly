@@ -5,7 +5,7 @@ import java.util.Arrays;
 import dao.IOHelper;
 
 public class LotterySpot extends Building {
-	private static final int LOTTERY_NUM = 20;
+	public static final int LOTTERY_NUM = 20;
 	private static final int LOTTERY_PRICE = 200;
 	private static int jackpot;
 	private static int prize = 0;
@@ -61,15 +61,16 @@ public class LotterySpot extends Building {
 
 	}
 
-	public static int getJackpot() {
-		return jackpot;
-	}
-
-	public static void generateJackpot() {
-		jackpot = (int) (Math.random() * LOTTERY_NUM);
+	public static void setJackpot(int j) {
+		if ((j > 0) || (j <= LOTTERY_NUM))
+			jackpot = j - 1;
 	}
 
 	public static void announceWinner() {
+
+		if (jackpot != -1) {
+			jackpot = (int) (Math.random() * LOTTERY_NUM);
+		}
 		for (int i = 0; i < owner.length; i++) {
 			if (owner[i] != null)
 				prize += LOTTERY_PRICE;
@@ -83,6 +84,10 @@ public class LotterySpot extends Building {
 			IOHelper.showInfo("\n无人中奖");
 		}
 		Arrays.fill(owner, null);
+	}
+
+	public static int getJackpot() {
+		return jackpot;
 	}
 
 }

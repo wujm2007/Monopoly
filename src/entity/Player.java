@@ -3,10 +3,10 @@ package entity;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import dao.Game;
+
 public class Player {
-	private static final int ORIGINAL_CASH = 5000;
-	private static final int ORIGINAL_TICKET = 100;
-	private static final int ORIGINAL_DEPOSIT = 5000;
+	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 5000;
 
 	private String name, icon, estateIcon;
 	private Collection<Card> cards = new ArrayList<Card>();
@@ -14,18 +14,43 @@ public class Player {
 	private BankAccount account;
 	private Map map;
 	private boolean isBroke;
+	private int steps = 0;
+	private boolean clockwise;
 
-	public class BankAccount {
-		private Player owner;
+	public void setSteps(int steps) {
+		this.steps = steps;
+	}
+
+	public void go() {
+		if (steps == 0) {
+			steps = (int) (Math.random() * 6) + 1;
+		}
+		for (int i = 0; i < steps; i++) {
+			Cell cell = map.getCell(getPosition());
+			if (cell.isBlocked()) {
+				cell.stay(this);
+				steps = 0;
+				return;
+			}
+			cell.removePlayer(this);
+			cell.getNextCell().addPlayer(this);
+			if (i != steps - 1)
+				cell.getNextCell().passby(this);
+			else
+				cell.getNextCell().stay(this);
+		}
+		steps = 0;
+	}
+
+	public int getPosition() {
+		return map.getCells().stream().filter(c -> (c.hasPlayer(this))).findFirst().orElse(null).getPosition();
+	}
+
+	private class BankAccount {
 		private int deposit;
 
-		public BankAccount(Player owner) {
-			this.owner = owner;
+		public BankAccount() {
 			this.deposit = ORIGINAL_DEPOSIT;
-		}
-
-		public Player getOwner() {
-			return owner;
 		}
 
 		public int getDeposit() {
@@ -45,9 +70,10 @@ public class Player {
 		this.estateIcon = estateIcon;
 		this.cash = ORIGINAL_CASH;
 		this.tickets = ORIGINAL_TICKET;
-		this.account = new BankAccount(this);
+		this.account = new BankAccount();
 		this.isBroke = false;
 		this.map.getCell(0).addPlayer(this);
+		this.clockwise = true;
 	}
 
 	public String getName() {
@@ -147,4 +173,11 @@ public class Player {
 		return map;
 	}
 
+	public void turnBack() {
+		this.clockwise = !clockwise;
+	}
+
+	public Game getGame() {
+		return getMap().getGame();
+	}
 }

@@ -1,5 +1,5 @@
 package entity;
 
-public class Card {
-
+public abstract class Card {
+	public abstract int act(Player p);
 }
