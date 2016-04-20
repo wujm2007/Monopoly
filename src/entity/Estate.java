@@ -69,7 +69,7 @@ public class Estate extends Building {
 	@Override
 	public void stay(Player p) {
 		if (this.getOwner() == null) {
-			if (IOHelper.InputYN("是否购买这栋住宅？价格: " + this.getPrice())) {
+			if (IOHelper.InputYN("是否购买" + this.getName() + "？价格: " + this.getPrice())) {
 				if (p.getCash() >= this.getPrice()) {
 					p.cost(this.getPrice());
 					this.setOwner(p);
@@ -80,7 +80,7 @@ public class Estate extends Building {
 			}
 		} else if (this.getOwner() == p) {
 			if (this.getLevel() < Estate.MAX_LEVEL - 1) {
-				if (IOHelper.InputYN("是否升级这栋住宅？价格: " + this.getUpgradeCost())) {
+				if (IOHelper.InputYN("是否升级" + this.getName() + "？价格: " + this.getUpgradeCost())) {
 					if (p.getCash() >= this.getUpgradeCost()) {
 						p.cost(this.getUpgradeCost());
 						this.setLevel(this.getLevel() + 1);
@@ -91,7 +91,7 @@ public class Estate extends Building {
 				}
 			}
 		} else {
-			IOHelper.alert("您需要支付过路费: " + this.getPrice());
+			IOHelper.alert("您需要支付" + this.getName() + "的过路费: " + this.getPrice());
 			p.cost(this.getPrice());
 		}
 	}

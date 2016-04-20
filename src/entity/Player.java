@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import dao.Game;
+import dao.IOHelper;
 
 public class Player {
 	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
@@ -25,6 +26,7 @@ public class Player {
 		if (steps == 0) {
 			steps = (int) (Math.random() * 6) + 1;
 		}
+		IOHelper.alert("您前进了" + steps + "步。");
 		for (int i = 0; i < steps; i++) {
 			Cell cell = map.getCell(getPosition());
 			if (cell.isBlocked()) {

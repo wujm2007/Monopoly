@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import entity.*;
 
 public class Main {
-	private static Game g = new Game();
+	private static Game g;
 
 	public static void main(String args[]) {
+		g = new Game();
 		while (true) {
 			g.addDay();
 			IOHelper.showInfo(
