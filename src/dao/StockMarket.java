@@ -1,14 +1,13 @@
 package dao;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import entity.Player;
 
 public class StockMarket {
 
-	public class Stock {
+	private class Stock {
 		private String name;
 		private double price;
 
@@ -31,11 +30,12 @@ public class StockMarket {
 
 	}
 
-	private Collection<Stock> stocks = new ArrayList<Stock>();
+	private ArrayList<Stock> stocks = new ArrayList<Stock>();
 	private HashMap<Player, HashMap<Stock, Integer>> acoounts = new HashMap<Player, HashMap<Stock, Integer>>();
 	private HashMap<Stock, Double> rand = new HashMap<Stock, Double>();
 
 	public StockMarket() {
+		// add 10 stocks and randomly generate their prices
 		stocks.add(new Stock("股票0", 10));
 		stocks.add(new Stock("股票1", 10));
 		stocks.add(new Stock("股票2", 10));
@@ -52,7 +52,7 @@ public class StockMarket {
 
 	public Stock getStock(int n) {
 		if ((n > 0) && (n <= stocks.size()))
-			return ((ArrayList<Stock>) stocks).get(n - 1);
+			return stocks.get(n - 1);
 		else
 			return null;
 	}
@@ -61,6 +61,11 @@ public class StockMarket {
 		if (!this.acoounts.containsKey(p))
 			this.acoounts.put(p, new HashMap<Stock, Integer>());
 		return acoounts.get(p);
+	}
+
+	// write off the stock account of a certain player (after he/she is broke)
+	public void writeoff(Player p) {
+		acoounts.remove(p);
 	}
 
 	public Integer getPlayerStock(Player p, int i) {
@@ -110,8 +115,8 @@ public class StockMarket {
 	public void stockOperation(Player p) {
 		// print stock information
 		stocks.stream().forEach(s -> {
-			IOHelper.showInfo(((ArrayList<Stock>) stocks).indexOf(s) + 1 + ":\t" + s.getName() + "\t\t单价:\t"
-					+ String.format("%.2f", s.getPrice()));
+			IOHelper.showInfo(
+					(stocks.indexOf(s) + 1) + ":\t" + s.getName() + "\t\t单价:\t" + String.format("%.2f", s.getPrice()));
 		});
 		if (IOHelper.InputYN("是否进行股票交易")) {
 			// ops is a String array, which contains the transaction code

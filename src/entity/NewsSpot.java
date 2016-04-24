@@ -1,6 +1,5 @@
 package entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import dao.IOHelper;
@@ -24,17 +23,14 @@ public class NewsSpot extends Building {
 
 	private void newsEvent(Player p) {
 
-		Collection<Player> c = new ArrayList<Player>();
-		p.getMap().getCells().stream().filter(cell -> (!cell.getPlayers().isEmpty())).forEach(cell -> {
-			c.addAll(cell.getPlayers());
-		});
+		Collection<Player> players = p.getGame().getPlayers(false);
 
 		int rand = (int) (Math.random() * 5);
 		int randMoney = (int) (Math.random() * 49 + 1) * 100;
 		switch (rand) {
 		case 0:
 			Player landlord = p;
-			for (Player player : c) {
+			for (Player player : players) {
 				if (player.getEstates().size() > p.getEstates().size())
 					landlord = player;
 			}
@@ -43,7 +39,7 @@ public class NewsSpot extends Building {
 			break;
 		case 1:
 			Player poorMan = p;
-			for (Player player : c) {
+			for (Player player : players) {
 				if (player.getEstates().size() < p.getEstates().size())
 					poorMan = player;
 			}
@@ -51,13 +47,13 @@ public class NewsSpot extends Building {
 			IOHelper.showInfo("公开补助土地最少者 " + poorMan.getName() + " " + randMoney + " 元。");
 			break;
 		case 2:
-			c.forEach(player -> {
+			players.forEach(player -> {
 				player.setDeposit((int) (player.getDeposit() * 1.1));
 			});
 			IOHelper.showInfo("银行加发储金红利，每个人得到存款10%。");
 			break;
 		case 3:
-			c.forEach(player -> {
+			players.forEach(player -> {
 				player.setDeposit((int) (player.getDeposit() * 0.9));
 			});
 			IOHelper.showInfo("所有人缴纳财产税10%。");
@@ -65,7 +61,7 @@ public class NewsSpot extends Building {
 		case 4:
 			IOHelper.showInfo("每个人得到一张卡片。");
 
-			p.getGame().getPlayers().stream().filter(player -> !player.isBroke()).forEach(player -> {
+			p.getGame().getPlayers(false).forEach(player -> {
 				int randCard = (int) (Math.random() * 7);
 				Card newCard = null;
 				switch (randCard) {

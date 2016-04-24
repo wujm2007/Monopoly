@@ -26,4 +26,9 @@ public class BlackCard extends Card {
 	public String getName() {
 		return "黑卡";
 	}
+
+	@Override
+	public String getDescription() {
+		return "使第二天这支股票下跌10%";
+	}
 }

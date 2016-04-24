@@ -24,4 +24,9 @@ public class RoadBlock extends Card {
 		return "路障卡";
 	}
 
+	@Override
+	public String getDescription() {
+		return "可以在前后8步之内安放一个路障,任意玩家经过路障时会停在路障所在位置不能前行";
+	}
+
 }

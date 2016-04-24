@@ -30,4 +30,9 @@ public class BuyEstateCard extends Card {
 		return "购地卡";
 	}
 
+	@Override
+	public String getDescription() {
+		return "强行用现价购买自己当前所在位置的土地(发动者不能购买自己的房屋)";
+	}
+
 }

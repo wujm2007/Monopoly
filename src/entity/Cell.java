@@ -42,15 +42,16 @@ public class Cell {
 		this.players.remove(p);
 	}
 
-	public String getIcon() {
+	// if player is the this cell: if (original == true) return the original
+	// icon, otherwise return the player's icon
+	public String getIcon(boolean original) {
+		if (original)
+			return this.getBuilding().getOriginalIcon();
+
 		if (this.getPlayers().isEmpty())
 			return this.getBuilding().getIcon();
 		else
 			return this.getPlayers().iterator().next().getIcon();
-	}
-
-	public String getOriginalIcon() {
-		return this.getBuilding().getOriginalIcon();
 	}
 
 	public Cell getNextCell() {

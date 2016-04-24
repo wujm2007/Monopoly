@@ -26,4 +26,9 @@ public class LotteryCard extends Card {
 		return "彩票卡";
 	}
 
+	@Override
+	public String getDescription() {
+		return "使用时可以操作本月的彩票开奖结果";
+	}
+
 }

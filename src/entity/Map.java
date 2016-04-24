@@ -8,7 +8,7 @@ import dao.Game;
 public class Map {
 
 	private Game game;
-	private Collection<Cell> cells = new ArrayList<Cell>();
+	private ArrayList<Cell> cells = new ArrayList<Cell>();
 
 	public Map(Game game) {
 		this.game = game;
@@ -31,7 +31,10 @@ public class Map {
 	}
 
 	public Cell getCell(int x) {
-		return cells.stream().filter(cell -> (cell.getPosition() == x)).findFirst().orElse(null);
+		if ((x < 0) || (x >= cells.size()))
+			return null;
+		else
+			return cells.get(x);
 	}
 
 }

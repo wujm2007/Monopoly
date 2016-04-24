@@ -24,4 +24,9 @@ public class ControlDice extends Card {
 		return "遥控骰子";
 	}
 
+	@Override
+	public String getDescription() {
+		return "使用时可以任意控制骰子的结果(1-6)";
+	}
+
 }

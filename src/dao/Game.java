@@ -16,6 +16,7 @@ public class Game {
 	private Map map;
 	private StockMarket stockMarket;
 	private Date date;
+	private Player[] players;
 
 	public Date getDate() {
 		return date;
@@ -36,18 +37,18 @@ public class Game {
 		this.date = new Date(this);
 	}
 
-	private Player[] players;
-
 	public Player getPlayer(int n) {
 		if ((0 <= n) && (PLAYER_NUM > n))
 			return this.players[n];
 		return null;
 	}
 
-	public Collection<Player> getPlayers() {
+	// broken == true means that broken players are included, otherwise not
+	public Collection<Player> getPlayers(boolean broken) {
 		Collection<Player> rtn = new ArrayList<Player>();
 		for (Player p : players) {
-			rtn.add(p);
+			if (!((!broken) && (p.isBroke())))
+				rtn.add(p);
 		}
 		return rtn;
 	}

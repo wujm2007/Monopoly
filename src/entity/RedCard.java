@@ -26,4 +26,9 @@ public class RedCard extends Card {
 	public String getName() {
 		return "红卡";
 	}
+
+	@Override
+	public String getDescription() {
+		return "使第二天这支股票上涨 10%";
+	}
 }

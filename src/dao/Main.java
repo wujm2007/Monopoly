@@ -9,15 +9,16 @@ public class Main {
 
 	public static void main(String args[]) {
 		g = new Game();
+		IOHelper.showInfo("========================\t游   戏   开   始\t========================");
 		while (true) {
 			g.addDay();
-			IOHelper.showInfo(
-					"今天是" + g.getDate().getYear() + "年" + g.getDate().getMonth() + "月" + g.getDate().getDay() + "日。");
-			g.getPlayers().stream().filter(p -> !p.isBroke()).forEach(p -> {
+			Date date = g.getDate();
+			IOHelper.showInfo("今天是" + date.getYear() + "年" + date.getMonth() + "月" + date.getDay() + "日。");
+			g.getPlayers(false).forEach(p -> {
 				IOHelper.showInfo("现在是玩家" + p.getName() + "的操作时间，您的前进方向是" + (p.isClockWise() ? "顺时针" : "逆时针"));
 				printMenu(p);
-				if (g.getPlayers().stream().filter(player -> !player.isBroke()).count() <= 1) {
-					IOHelper.alert("Game over!");
+				if (g.getPlayers(false).stream().count() <= 1) {
+					IOHelper.alert("游戏结束!");
 					System.exit(0);
 				}
 			});
@@ -41,11 +42,11 @@ public class Main {
 		}
 		switch (command) {
 		case 0:
-			printMap();
+			printMap(false);
 			printMenu(p);
 			break;
 		case 1:
-			printOriginalMap();
+			printMap(true);
 			printMenu(p);
 			break;
 		case 2:
@@ -78,41 +79,24 @@ public class Main {
 	}
 
 	// a primitive way to print map
-	public static void printMap() {
+	public static void printMap(boolean original) {
 		Map map = g.getMap();
 		int length = map.getLength();
 		for (int i = 0; i < 20; i++)
-			System.out.print(map.getCell(i).getIcon());
+			System.out.print(map.getCell(i).getIcon(original));
 		for (int i = 20; i < 20 + (length - 40) / 2; i++) {
 			int j = length - 1 + 20 - i;
-			System.out.printf("\n%s                                     %s", map.getCell(i).getIcon(),
-					map.getCell(j).getIcon());
+			System.out.printf("\n%s                                     %s", map.getCell(i).getIcon(original),
+					map.getCell(j).getIcon(original));
 		}
 		System.out.printf("\n");
 		for (int i = length - 1 - (length - 40) / 2; i > length - 1 - (length - 40) / 2 - 20; i--) {
-			System.out.print(map.getCell(i).getIcon());
+			System.out.print(map.getCell(i).getIcon(original));
 		}
 		System.out.printf("\n");
 	}
 
-	// a primitive way to print map
-	public static void printOriginalMap() {
-		Map map = g.getMap();
-		int length = map.getLength();
-		for (int i = 0; i < 20; i++)
-			System.out.print(map.getCell(i).getOriginalIcon());
-		for (int i = 20; i < 20 + (length - 40) / 2; i++) {
-			int j = length - 1 + 20 - i;
-			System.out.printf("\n%s                                     %s", map.getCell(i).getOriginalIcon(),
-					map.getCell(j).getIcon());
-		}
-		System.out.printf("\n");
-		for (int i = length - 1 - (length - 40) / 2; i > length - 1 - (length - 40) / 2 - 20; i--) {
-			System.out.print(map.getCell(i).getOriginalIcon());
-		}
-		System.out.printf("\n");
-	}
-
+	// print ustItem menu
 	private static void useItem(Player p) {
 		ArrayList<Card> cards = p.getCards();
 		if (cards.size() == 0) {
@@ -120,16 +104,15 @@ public class Main {
 			return;
 		}
 		cards.forEach(c -> {
-			IOHelper.showInfo((cards.indexOf(c) + 1) + ":" + c.getName());
+			IOHelper.showInfo((cards.indexOf(c) + 1) + ":" + c.getName() + "  \t" + c.getDescription());
 		});
 
 		int index;
 		if (((index = IOHelper.InputInt("请输入您要使用的卡片编号(输入0退出)") - 1) >= 0) && (index < cards.size())) {
-			if (cards.get(index).act(p) == 0) {
+			if (cards.get(index).act(p) == 0)
 				cards.remove(index);
-			} else {
+			else
 				IOHelper.alert("使用失败。");
-			}
 		} else if (index == -1)
 			return;
 		else {
@@ -139,20 +122,26 @@ public class Main {
 
 	}
 
+	// print asset of players
 	private static void showAsset() {
 		IOHelper.showInfo("玩家资产信息如下:\n玩家名\t点券\t现金\t存款\t房产\t资产总额\t");
-		g.getPlayers().forEach(p -> {
-			IOHelper.showInfo(String.format("%s\t%d\t%d\t%d\t%d\t%d\t", p.getName(), p.getTickets(), p.getCash(),
-					p.getDeposit(), p.getEstates().size(), p.getAsset()));
+		g.getPlayers(true).forEach(p -> {
+			if (p.isBroke())
+				IOHelper.showInfo(String.format("%s\t已破产", p.getName()));
+			else
+				IOHelper.showInfo(String.format("%s\t%d\t%d\t%d\t%d\t%d\t", p.getName(), p.getTickets(), p.getCash(),
+						p.getDeposit(), p.getEstates().size(), p.getAsset()));
 		});
 	}
 
+	// print the information of a cell in certain steps
 	private static void showMsgInCertainSteps(Player p) {
 		int relativePos = IOHelper.InputInt("请输入要查询的地点与您的相对步数");
 		Cell c = g.getMap().getCell(p.getPosition());
 		IOHelper.showInfo(c.getCellByRelativePos(relativePos).getBuilding().getDescription());
 	}
 
+	// print warnings in 10 steps
 	private static void showWarnings(Player p) {
 		Cell c = g.getMap().getCell(p.getPosition());
 		boolean noBlock = true;

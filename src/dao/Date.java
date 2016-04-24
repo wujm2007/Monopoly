@@ -31,20 +31,20 @@ class Date {
 	public void addDay() {
 		day++;
 		game.getStockMarket().refresh();
-		if (isLeapYear(getYear()))
-			dayOfMonth[1] = 29;
-		else
-			dayOfMonth[1] = 28;
 		if (day > dayOfMonth[month - 1]) {
 			month++;
 			day = 1;
 			LotterySpot.announceWinner();
-			game.getPlayers().stream().filter(p -> !p.isBroke()).forEach(p -> {
+			game.getPlayers(false).forEach(p -> {
 				Bank.payInterest(p);
 			});
 		}
 		if (month > 12) {
 			year++;
+			if (isLeapYear(getYear()))
+				dayOfMonth[1] = 29;
+			else
+				dayOfMonth[1] = 28;
 			month = 1;
 		}
 	}

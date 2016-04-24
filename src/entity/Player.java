@@ -9,6 +9,23 @@ import dao.IOHelper;
 public class Player {
 	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
 
+	private class BankAccount {
+		private int deposit;
+
+		public BankAccount() {
+			this.deposit = ORIGINAL_DEPOSIT;
+		}
+
+		public int getDeposit() {
+			return deposit;
+		}
+
+		public void setDeposit(int deposit) {
+			this.deposit = deposit;
+		}
+
+	}
+
 	private String name, icon, estateIcon;
 	private ArrayList<Card> cards;
 	private int cash, tickets;
@@ -17,6 +34,22 @@ public class Player {
 	private boolean isBroke;
 	private int steps = 0;
 	private boolean clockwise;
+
+	public Player(Map map, String name, String icon, String estateIcon) {
+		this.map = map;
+		this.name = name;
+		this.icon = icon;
+		this.estateIcon = estateIcon;
+		this.cash = ORIGINAL_CASH;
+		this.tickets = ORIGINAL_TICKET;
+		this.account = new BankAccount();
+		this.isBroke = false;
+		this.map.getCell(0).addPlayer(this);
+		this.clockwise = true;
+		this.cards = new ArrayList<Card>();
+		this.addCard(new RoadBlock());
+		this.addCard(new ControlDice());
+	}
 
 	public void setSteps(int steps) {
 		this.steps = steps;
@@ -46,39 +79,6 @@ public class Player {
 
 	public int getPosition() {
 		return map.getCells().stream().filter(c -> (c.hasPlayer(this))).findFirst().orElse(null).getPosition();
-	}
-
-	private class BankAccount {
-		private int deposit;
-
-		public BankAccount() {
-			this.deposit = ORIGINAL_DEPOSIT;
-		}
-
-		public int getDeposit() {
-			return deposit;
-		}
-
-		public void setDeposit(int deposit) {
-			this.deposit = deposit;
-		}
-
-	}
-
-	public Player(Map map, String name, String icon, String estateIcon) {
-		this.map = map;
-		this.name = name;
-		this.icon = icon;
-		this.estateIcon = estateIcon;
-		this.cash = ORIGINAL_CASH;
-		this.tickets = ORIGINAL_TICKET;
-		this.account = new BankAccount();
-		this.isBroke = false;
-		this.map.getCell(0).addPlayer(this);
-		this.clockwise = true;
-		this.cards = new ArrayList<Card>();
-		this.addCard(new RoadBlock());
-		this.addCard(new ControlDice());
 	}
 
 	public String getName() {
@@ -141,6 +141,10 @@ public class Player {
 	}
 
 	public void broke() {
+		this.getEstates().stream().forEach(e -> {
+			e.setOwner(null);
+		});
+		this.getGame().getStockMarket().writeoff(this);
 		this.isBroke = true;
 	}
 

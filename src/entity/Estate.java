@@ -124,8 +124,4 @@ public class Estate extends Building {
 		return this.street;
 	}
 
-	public void setOwnerNull() {
-		this.owner = null;
-	}
-
 }
