@@ -1,9 +1,6 @@
-package dao;
+package entity;
 
-import entity.Bank;
-import entity.LotterySpot;
-
-class Date {
+public class Date {
 	private int year = 2016, month = 1, day = 0;
 	private int dayOfMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 	private Game game;

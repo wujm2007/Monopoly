@@ -1,6 +1,6 @@
 package entity;
 
-import dao.IOHelper;
+import biz.IOHelper;
 
 public class CardSpot extends Building {
 

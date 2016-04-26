@@ -3,8 +3,7 @@ package entity;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import dao.Game;
-import dao.IOHelper;
+import biz.IOHelper;
 
 public class Player {
 	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;

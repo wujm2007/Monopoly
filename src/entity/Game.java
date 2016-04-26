@@ -1,4 +1,4 @@
-package dao;
+package entity;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -7,16 +7,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import entity.*;
-
 public class Game {
 
 	private static final String STR_MAP = "5水星街,3,7金星街,2,5火星街,4,7,7,7,7,7,6,6,6,7,7,7,7,7,5木星街,1,5土星街,5,6天王星街,3,6海王星街,2,5蔡伦路,4,7,6,6,6,5,5,1,5,5";
-	private static final int PLAYER_NUM = 2;
+	private static final String[] PLAYER_ICONS = { "■", "●", "★", "▲" };
+	private static final String[] ESTATE_ICONS = { "□", "○", "☆", "△" };
 	private Map map;
 	private StockMarket stockMarket;
 	private Date date;
-	private Player[] players;
+	private int playerNum;
+	private Collection<Player> players = new ArrayList<Player>();
 
 	public Date getDate() {
 		return date;
@@ -30,26 +30,20 @@ public class Game {
 		return map;
 	}
 
-	public Game() {
+	public Game(int playerNum) {
+		this.playerNum = playerNum;
 		this.initMap();
 		this.initPlayers();
 		this.stockMarket = new StockMarket();
 		this.date = new Date(this);
 	}
 
-	public Player getPlayer(int n) {
-		if ((0 <= n) && (PLAYER_NUM > n))
-			return this.players[n];
-		return null;
-	}
-
 	// broken == true means that broken players are included, otherwise not
 	public Collection<Player> getPlayers(boolean broken) {
 		Collection<Player> rtn = new ArrayList<Player>();
-		for (Player p : players) {
-			if (!((!broken) && (p.isBroke())))
-				rtn.add(p);
-		}
+		players.stream().filter(p -> (!((!broken) && (p.isBroke())))).forEach(p -> {
+			rtn.add(p);
+		});
 		return rtn;
 	}
 
@@ -104,9 +98,9 @@ public class Game {
 	}
 
 	private void initPlayers() {
-		this.players = new Player[PLAYER_NUM];
-		this.players[0] = new Player(this.map, "Player1", "□", "○");
-		this.players[1] = new Player(this.map, "Player2", "■", "●");
+		for (int i = 0; i < playerNum; i++) {
+			this.players.add(new Player(this.map, "Player" + (i + 1), PLAYER_ICONS[i], ESTATE_ICONS[i]));
+		}
 	}
 
 	public void addDay() {

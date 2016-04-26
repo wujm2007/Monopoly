@@ -1,7 +1,6 @@
 package entity;
 
-import dao.IOHelper;
-import dao.StockMarket;
+import biz.IOHelper;
 
 public class BlackCard extends Card {
 

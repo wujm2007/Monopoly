@@ -1,9 +1,6 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
-
-import dao.Game;
 
 public class Map {
 
@@ -26,7 +23,7 @@ public class Map {
 		cells.add(c);
 	}
 
-	public Collection<Cell> getCells() {
+	public ArrayList<Cell> getCells() {
 		return cells;
 	}
 

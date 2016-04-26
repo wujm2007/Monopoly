@@ -1,15 +1,14 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-import dao.IOHelper;
+import biz.IOHelper;
 
 public class Cell {
 	private Map map;
 	private int position;
 	private Building building;
-	private Collection<Player> players = new ArrayList<Player>();
+	private ArrayList<Player> players = new ArrayList<Player>();
 	private boolean blocked;
 
 	public Cell(Map m, int p, Building b) {
@@ -30,28 +29,28 @@ public class Cell {
 		this.players.add(player);
 	}
 
-	public Collection<Player> getPlayers() {
-		return players;
+	public Player getLastPlayer() {
+		return this.players.get(players.size() - 1);
 	}
 
 	public boolean hasPlayer(Player p) {
-		return getPlayers().contains(p);
+		return this.players.contains(p);
 	}
 
 	public void removePlayer(Player p) {
 		this.players.remove(p);
 	}
 
-	// if player is the this cell: if (original == true) return the original
+	// if player is on this cell: if (original == true) return the original
 	// icon, otherwise return the player's icon
 	public String getIcon(boolean original) {
 		if (original)
 			return this.getBuilding().getOriginalIcon();
 
-		if (this.getPlayers().isEmpty())
+		if (this.players.isEmpty())
 			return this.getBuilding().getIcon();
 		else
-			return this.getPlayers().iterator().next().getIcon();
+			return this.getLastPlayer().getIcon();
 	}
 
 	public Cell getNextCell() {

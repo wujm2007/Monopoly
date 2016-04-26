@@ -1,14 +1,13 @@
-package dao;
+package biz;
 
 import java.util.ArrayList;
-
-import entity.*;
+import entity.*;;
 
 public class Main {
 	private static Game g;
 
 	public static void main(String args[]) {
-		g = new Game();
+		g = new Game(1);
 		IOHelper.showInfo("========================\t游   戏   开   始\t========================");
 		while (true) {
 			g.addDay();
@@ -42,11 +41,11 @@ public class Main {
 		}
 		switch (command) {
 		case 0:
-			printMap(false);
+			printMap(false, p);
 			printMenu(p);
 			break;
 		case 1:
-			printMap(true);
+			printMap(true, p);
 			printMenu(p);
 			break;
 		case 2:
@@ -78,20 +77,30 @@ public class Main {
 		}
 	}
 
+	private static ArrayList<String> generateIconMap(boolean original, Player p) {
+		ArrayList<String> rtn = new ArrayList<String>();
+		g.getMap().getCells().forEach(c -> {
+			if (c.hasPlayer(p))
+				rtn.add(p.getIcon());
+			else
+				rtn.add(c.getIcon(original));
+		});
+		return rtn;
+	}
+
 	// a primitive way to print map
-	public static void printMap(boolean original) {
-		Map map = g.getMap();
-		int length = map.getLength();
+	public static void printMap(boolean original, Player p) {
+		ArrayList<String> iconMap = generateIconMap(original, p);
+		int length = iconMap.size();
 		for (int i = 0; i < 20; i++)
-			System.out.print(map.getCell(i).getIcon(original));
+			System.out.print(iconMap.get(i));
 		for (int i = 20; i < 20 + (length - 40) / 2; i++) {
 			int j = length - 1 + 20 - i;
-			System.out.printf("\n%s                                     %s", map.getCell(i).getIcon(original),
-					map.getCell(j).getIcon(original));
+			System.out.printf("\n%s                                     %s", iconMap.get(i), iconMap.get(j));
 		}
 		System.out.printf("\n");
 		for (int i = length - 1 - (length - 40) / 2; i > length - 1 - (length - 40) / 2 - 20; i--) {
-			System.out.print(map.getCell(i).getIcon(original));
+			System.out.print(iconMap.get(i));
 		}
 		System.out.printf("\n");
 	}

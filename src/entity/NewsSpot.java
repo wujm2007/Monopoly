@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Collection;
 
-import dao.IOHelper;
+import biz.IOHelper;
 
 public class NewsSpot extends Building {
 

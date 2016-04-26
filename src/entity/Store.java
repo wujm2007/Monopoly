@@ -2,7 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 
-import dao.IOHelper;
+import biz.IOHelper;
 
 public class Store extends Building {
 

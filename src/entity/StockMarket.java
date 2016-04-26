@@ -1,9 +1,9 @@
-package dao;
+package entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import entity.Player;
+import biz.IOHelper;
 
 public class StockMarket {
 

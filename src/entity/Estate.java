@@ -1,6 +1,6 @@
 package entity;
 
-import dao.IOHelper;
+import biz.IOHelper;
 
 public class Estate extends Building {
 	private static final int MAX_LEVEL = 5;

@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Arrays;
 
-import dao.IOHelper;
+import biz.IOHelper;
 
 public class LotterySpot extends Building {
 	public static final int LOTTERY_NUM = 20;

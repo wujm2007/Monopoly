@@ -1,6 +1,6 @@
 package entity;
 
-import dao.IOHelper;
+import biz.IOHelper;
 
 public class Bank extends Building {
 
@@ -26,7 +26,7 @@ public class Bank extends Building {
 	private static void bankOperation(Player p) {
 
 		IOHelper.showInfo("欢迎进入银行，您的资产情况如下：\n姓名：" + p.getName() + "\t现金：" + p.getCash() + "\t存款：" + p.getDeposit()
-				+ "\t总资产：" + p.getAsset() + "\t");
+				+ "\t总资产：" + p.getAsset());
 
 		while (IOHelper.InputYN("是否存取款？")) {
 			if (IOHelper.InputYN("您是否需要存款？")) {
