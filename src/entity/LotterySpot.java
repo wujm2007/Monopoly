@@ -5,6 +5,8 @@ import java.util.Arrays;
 import biz.IOHelper;
 
 public class LotterySpot extends Building {
+	private static final String icon = "彩";
+	private static final String type = "彩票点";
 	public static final int LOTTERY_NUM = 20;
 	private static final int LOTTERY_PRICE = 200;
 	private static int jackpot;
@@ -15,7 +17,12 @@ public class LotterySpot extends Building {
 
 	@Override
 	public String getIcon() {
-		return "彩";
+		return icon;
+	}
+
+	@Override
+	public String getType() {
+		return type;
 	}
 
 	@Override
@@ -88,11 +95,6 @@ public class LotterySpot extends Building {
 
 	public static int getJackpot() {
 		return jackpot;
-	}
-
-	@Override
-	public String getType() {
-		return "彩票点";
 	}
 
 }

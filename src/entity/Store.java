@@ -5,10 +5,17 @@ import java.util.ArrayList;
 import biz.IOHelper;
 
 public class Store extends Building {
+	private static final String icon = "新";
+	private static final String type = "新闻点";
 
 	@Override
 	public String getIcon() {
-		return "道";
+		return icon;
+	}
+
+	@Override
+	public String getType() {
+		return type;
 	}
 
 	@Override
@@ -51,10 +58,5 @@ public class Store extends Building {
 				continue;
 			}
 		}
-	}
-
-	@Override
-	public String getType() {
-		return "道具店";
 	}
 }

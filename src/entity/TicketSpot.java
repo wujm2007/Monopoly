@@ -1,10 +1,17 @@
 package entity;
 
 public class TicketSpot extends Building {
+	private static final String icon = "券";
+	private static final String type = "点券点";
 
 	@Override
 	public String getIcon() {
-		return "券";
+		return icon;
+	}
+
+	@Override
+	public String getType() {
+		return type;
 	}
 
 	@Override
@@ -18,8 +25,4 @@ public class TicketSpot extends Building {
 		p.setTickets(p.getTickets() + rand);
 	}
 
-	@Override
-	public String getType() {
-		return "点券点";
-	}
 }

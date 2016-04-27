@@ -7,7 +7,7 @@ public class Main {
 	private static Game g;
 
 	public static void main(String args[]) {
-		g = new Game(1);
+		g = new Game(4);
 		IOHelper.showInfo("========================\t游   戏   开   始\t========================");
 		while (true) {
 			g.addDay();

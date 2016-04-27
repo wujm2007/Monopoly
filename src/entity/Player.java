@@ -116,13 +116,16 @@ public class Player {
 		this.tickets = tickets;
 	}
 
-	public void cost(int cost) {
+	public int cost(int cost) {
+		int totalCost = cost;
 		if (getCash() >= cost) {
 			setCash(getCash() - cost);
+			return cost;
 		} else {
 			cost -= getCash();
 			if (getDeposit() >= cost) {
 				setDeposit(getDeposit() - cost);
+				return cost;
 			} else {
 				cost -= getDeposit();
 				while ((cost > 0) && (!getEstates().isEmpty())) {
@@ -135,6 +138,7 @@ public class Player {
 				} else {
 					setCash(getCash() - cost);
 				}
+				return totalCost - cost;
 			}
 		}
 	}
@@ -160,12 +164,9 @@ public class Player {
 	}
 
 	public Collection<Estate> getEstates() {
-		Collection<Estate> c = new ArrayList<Estate>();
-		getMap().getCells().stream().filter(cell -> (cell.getBuilding().getOwner() == this))
-				.map(cell -> cell.getBuilding()).forEachOrdered(e -> {
-					c.add((Estate) e);
-				});
-		return c;
+		return getMap().getCells().stream()
+				.filter(cell -> (cell.getBuilding() instanceof Estate) && (cell.getBuilding().getOwner() == this))
+				.map(cell -> (Estate) cell.getBuilding()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 	}
 
 	public int getAsset() {

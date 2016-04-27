@@ -3,10 +3,17 @@ package entity;
 import biz.IOHelper;
 
 public class CardSpot extends Building {
+	private static final String icon = "卡";
+	private static final String type = "银行";
 
 	@Override
 	public String getIcon() {
-		return "卡";
+		return icon;
+	}
+
+	@Override
+	public String getType() {
+		return type;
 	}
 
 	@Override
@@ -44,11 +51,6 @@ public class CardSpot extends Building {
 		IOHelper.alert("恭喜您获得 " + newCard.getName() + " 。");
 		p.getCards().add(newCard);
 		return;
-	}
-
-	@Override
-	public String getType() {
-		return "道具点";
 	}
 
 }

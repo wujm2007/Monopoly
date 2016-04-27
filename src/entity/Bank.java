@@ -3,10 +3,17 @@ package entity;
 import biz.IOHelper;
 
 public class Bank extends Building {
+	private static final String icon = "银";
+	private static final String type = "银行";
 
 	@Override
 	public String getIcon() {
-		return "银";
+		return icon;
+	}
+
+	@Override
+	public String getType() {
+		return type;
 	}
 
 	@Override
@@ -51,11 +58,6 @@ public class Bank extends Building {
 					+ "\t总资产：" + p.getAsset() + "\t");
 		}
 
-	}
-
-	@Override
-	public String getType() {
-		return "银行";
 	}
 
 }

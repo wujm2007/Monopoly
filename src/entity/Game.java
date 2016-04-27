@@ -40,11 +40,8 @@ public class Game {
 
 	// broken == true means that broken players are included, otherwise not
 	public Collection<Player> getPlayers(boolean broken) {
-		Collection<Player> rtn = new ArrayList<Player>();
-		players.stream().filter(p -> (!((!broken) && (p.isBroke())))).forEach(p -> {
-			rtn.add(p);
-		});
-		return rtn;
+		return players.stream().filter(p -> (!((!broken) && (p.isBroke())))).collect(ArrayList::new, ArrayList::add,
+				ArrayList::addAll);
 	}
 
 	// initializing the map with a given string

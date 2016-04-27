@@ -1,10 +1,12 @@
 package entity;
 
 public class EmptySpot extends Building {
+	private static final String icon = "空";
+	private static final String type = "空地";
 
 	@Override
 	public String getIcon() {
-		return "空";
+		return icon;
 	}
 
 	@Override
@@ -19,7 +21,7 @@ public class EmptySpot extends Building {
 
 	@Override
 	public String getType() {
-		return "空地";
+		return type;
 	}
 
 }

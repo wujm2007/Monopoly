@@ -3,12 +3,24 @@ package entity;
 import biz.IOHelper;
 
 public class Estate extends Building {
+	private static final String icon = "◎";
+	private static final String type = "房产";
 	private static final int MAX_LEVEL = 5;
 	private Player owner;
 	private int level;
 	private int price;
 	private int number;
 	private String street;
+
+	@Override
+	public String getOriginalIcon() {
+		return icon;
+	}
+
+	@Override
+	public String getType() {
+		return type;
+	}
 
 	public Estate(String street, int number, double priceRate) {
 		this.owner = null;
@@ -69,7 +81,7 @@ public class Estate extends Building {
 	@Override
 	public void stay(Player p) {
 		if (this.getOwner() == null) {
-			if (IOHelper.InputYN("是否购买" + this.getName() + "？价格: " + this.getPrice())) {
+			if (IOHelper.InputYN("是否购买" + this.getName() + "？价格: " + this.getPrice() + "元。")) {
 				if (p.getCash() >= this.getPrice()) {
 					p.cost(this.getPrice());
 					this.setOwner(p);
@@ -80,7 +92,7 @@ public class Estate extends Building {
 			}
 		} else if (this.getOwner() == p) {
 			if (this.getLevel() < Estate.MAX_LEVEL - 1) {
-				if (IOHelper.InputYN("是否升级" + this.getName() + "？价格: " + this.getUpgradeCost())) {
+				if (IOHelper.InputYN("是否升级" + this.getName() + "？价格: " + this.getUpgradeCost() + "元。")) {
 					if (p.getCash() >= this.getUpgradeCost()) {
 						p.cost(this.getUpgradeCost());
 						this.setLevel(this.getLevel() + 1);
@@ -91,19 +103,10 @@ public class Estate extends Building {
 				}
 			}
 		} else {
-			IOHelper.alert("您需要支付" + this.getName() + "的过路费: " + this.getPrice());
-			p.cost(this.getPrice());
+			IOHelper.alert("您需要支付" + this.getName() + "的过路费: " + this.getPrice() + "元。");
+			int toll = p.cost(this.getPrice());
+			this.getOwner().setCash(this.getOwner().getCash() + toll);
 		}
-	}
-
-	@Override
-	public String getOriginalIcon() {
-		return "◎";
-	}
-
-	@Override
-	public String getType() {
-		return "房产";
 	}
 
 	@Override

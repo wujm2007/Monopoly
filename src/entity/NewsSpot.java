@@ -5,10 +5,17 @@ import java.util.Collection;
 import biz.IOHelper;
 
 public class NewsSpot extends Building {
+	private static final String icon = "新";
+	private static final String type = "新闻点";
 
 	@Override
 	public String getIcon() {
-		return "新";
+		return icon;
+	}
+
+	@Override
+	public String getType() {
+		return type;
 	}
 
 	@Override
@@ -93,11 +100,6 @@ public class NewsSpot extends Building {
 
 			break;
 		}
-	}
-
-	@Override
-	public String getType() {
-		return "新闻点";
 	}
 
 }
