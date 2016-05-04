@@ -1,8 +1,10 @@
 package entity;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class RedCard extends Card {
+	private static final String NAME = "红卡";
+	private static final String DESCRIPTION = "使第二天这支股票上涨10%";
 
 	@Override
 	public int act(Player p) {
@@ -23,11 +25,11 @@ public class RedCard extends Card {
 
 	@Override
 	public String getName() {
-		return "红卡";
+		return NAME;
 	}
 
 	@Override
 	public String getDescription() {
-		return "使第二天这支股票上涨 10%";
+		return DESCRIPTION;
 	}
 }

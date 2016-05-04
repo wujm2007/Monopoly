@@ -2,20 +2,20 @@ package entity;
 
 import java.util.Collection;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class NewsSpot extends Building {
-	private static final String icon = "新";
-	private static final String type = "新闻点";
+	private static final String ICON = "新";
+	private static final String TYPE = "新闻点";
 
 	@Override
 	public String getIcon() {
-		return icon;
+		return ICON;
 	}
 
 	@Override
 	public String getType() {
-		return type;
+		return TYPE;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class NewsSpot extends Building {
 
 	private void newsEvent(Player p) {
 
-		Collection<Player> players = p.getGame().getPlayers(false);
+		Collection<Player> players = p.getPeers(false);
 
 		int rand = (int) (Math.random() * 5);
 		int randMoney = (int) (Math.random() * 49 + 1) * 100;
@@ -42,7 +42,7 @@ public class NewsSpot extends Building {
 					landlord = player;
 			}
 			landlord.setCash(landlord.getCash() + randMoney);
-			IOHelper.showInfo("公开表扬第一地主 " + landlord.getName() + " 奖励 " + randMoney + " 元。");
+			IOHelper.alert("公开表扬第一地主 " + landlord.getName() + " 奖励 " + randMoney + " 元。");
 			break;
 		case 1:
 			Player poorMan = p;
@@ -51,24 +51,24 @@ public class NewsSpot extends Building {
 					poorMan = player;
 			}
 			poorMan.setCash(poorMan.getCash() + randMoney);
-			IOHelper.showInfo("公开补助土地最少者 " + poorMan.getName() + " " + randMoney + " 元。");
+			IOHelper.alert("公开补助土地最少者 " + poorMan.getName() + " " + randMoney + " 元。");
 			break;
 		case 2:
 			players.forEach(player -> {
 				player.setDeposit((int) (player.getDeposit() * 1.1));
 			});
-			IOHelper.showInfo("银行加发储金红利，每个人得到存款10%。");
+			IOHelper.alert("银行加发储金红利，每个人得到存款10%。");
 			break;
 		case 3:
 			players.forEach(player -> {
 				player.setDeposit((int) (player.getDeposit() * 0.9));
 			});
-			IOHelper.showInfo("所有人缴纳财产税10%。");
+			IOHelper.alert("所有人缴纳财产税10%。");
 			break;
 		case 4:
-			IOHelper.showInfo("每个人得到一张卡片。");
+			IOHelper.alert("每个人得到一张卡片。");
 
-			p.getGame().getPlayers(false).forEach(player -> {
+			p.getPeers(false).forEach(player -> {
 				int randCard = (int) (Math.random() * 7);
 				Card newCard = null;
 				switch (randCard) {

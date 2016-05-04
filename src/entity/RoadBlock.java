@@ -1,8 +1,10 @@
 package entity;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class RoadBlock extends Card {
+	private static final String NAME = "路障卡";
+	private static final String DESCRIPTION = "可以在前后8步之内安放一个路障,任意玩家经过路障时会停在路障所在位置不能前行";
 
 	@Override
 	public int act(Player p) {
@@ -21,12 +23,12 @@ public class RoadBlock extends Card {
 
 	@Override
 	public String getName() {
-		return "路障卡";
+		return NAME;
 	}
 
 	@Override
 	public String getDescription() {
-		return "可以在前后8步之内安放一个路障,任意玩家经过路障时会停在路障所在位置不能前行";
+		return DESCRIPTION;
 	}
 
 }

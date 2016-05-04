@@ -1,19 +1,19 @@
 package entity;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class CardSpot extends Building {
-	private static final String icon = "卡";
-	private static final String type = "银行";
+	private static final String ICON = "卡";
+	private static final String TYPE = "银行";
 
 	@Override
 	public String getIcon() {
-		return icon;
+		return ICON;
 	}
 
 	@Override
 	public String getType() {
-		return type;
+		return TYPE;
 	}
 
 	@Override

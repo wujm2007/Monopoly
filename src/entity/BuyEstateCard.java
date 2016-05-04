@@ -1,8 +1,10 @@
 package entity;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class BuyEstateCard extends Card {
+	private static final String NAME = "购地卡";
+	private static final String DESCRIPTION = "强行用现价购买自己当前所在位置的土地(发动者不能购买自己的房屋)";
 
 	@Override
 	public int act(Player p) {
@@ -27,12 +29,12 @@ public class BuyEstateCard extends Card {
 
 	@Override
 	public String getName() {
-		return "购地卡";
+		return NAME;
 	}
 
 	@Override
 	public String getDescription() {
-		return "强行用现价购买自己当前所在位置的土地(发动者不能购买自己的房屋)";
+		return DESCRIPTION;
 	}
 
 }

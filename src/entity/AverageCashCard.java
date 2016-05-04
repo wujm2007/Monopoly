@@ -1,14 +1,15 @@
 package entity;
 
 public class AverageCashCard extends Card {
+	private static final String NAME = "均富卡";
+	private static final String DESCRIPTION = "将所有人的现金平均分配";
 
 	@Override
-	public int act(Player p) {
-		int totalCash = p.getGame().getPlayers(false).stream().map(player -> player.getCash()).reduce((a, b) -> a + b)
-				.orElse(0);
-		int averageCash = totalCash / p.getGame().getPlayers(false).size();
-		p.getGame().getPlayers(false).forEach(player -> {
-			player.setCash(averageCash);
+	public int act(Player player) {
+		int totalCash = player.getPeers(false).stream().map(p -> p.getCash()).reduce((a, b) -> a + b).orElse(0);
+		int averageCash = totalCash / player.getPeers(false).size();
+		player.getPeers(false).forEach(p -> {
+			p.setCash(averageCash);
 		});
 		return 0;
 	}
@@ -20,12 +21,12 @@ public class AverageCashCard extends Card {
 
 	@Override
 	public String getName() {
-		return "均富卡";
+		return NAME;
 	}
 
 	@Override
 	public String getDescription() {
-		return "将所有人的现金平均分配";
+		return DESCRIPTION;
 	}
 
 }

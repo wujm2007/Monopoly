@@ -2,12 +2,14 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class StockMarket {
 
-	private class Stock {
+	public class Stock {
 		private String name;
 		private double price;
 
@@ -30,13 +32,40 @@ public class StockMarket {
 
 	}
 
-	private ArrayList<Stock> stocks = new ArrayList<Stock>();
-	private HashMap<Player, HashMap<Stock, Integer>> acoounts = new HashMap<Player, HashMap<Stock, Integer>>();
-	private HashMap<Stock, Double> rand = new HashMap<Stock, Double>();
+	public enum StockTradeOpType {
+		BUY, SELL, QUIT
+	}
+
+	public static class StockTradeOperation {
+		private StockTradeOpType op;
+		private int index, num;
+
+		public StockTradeOperation(StockTradeOpType op, int index, int num) {
+			this.op = op;
+			this.index = index;
+			this.num = num;
+		}
+
+		public StockTradeOpType getOpType() {
+			return op;
+		}
+
+		public int getIndex() {
+			return index;
+		}
+
+		public int getNum() {
+			return num;
+		}
+
+	}
+
+	private List<Stock> stocks = new ArrayList<Stock>();
+	private Map<Player, HashMap<Stock, Integer>> acoounts = new HashMap<Player, HashMap<Stock, Integer>>();
+	private Map<Stock, Double> rand = new HashMap<Stock, Double>();
 
 	public StockMarket() {
 		// add 10 stocks and randomly generate their prices
-		stocks.add(new Stock("股票0", 10));
 		stocks.add(new Stock("股票1", 10));
 		stocks.add(new Stock("股票2", 10));
 		stocks.add(new Stock("股票3", 10));
@@ -46,6 +75,7 @@ public class StockMarket {
 		stocks.add(new Stock("股票7", 10));
 		stocks.add(new Stock("股票8", 10));
 		stocks.add(new Stock("股票9", 10));
+		stocks.add(new Stock("股票0", 10));
 		for (int i = 0; i < 100; i++)
 			refresh();
 	}
@@ -57,7 +87,7 @@ public class StockMarket {
 			return null;
 	}
 
-	public HashMap<Stock, Integer> getAccount(Player p) {
+	public Map<Stock, Integer> getAccount(Player p) {
 		if (!this.acoounts.containsKey(p))
 			this.acoounts.put(p, new HashMap<Stock, Integer>());
 		return acoounts.get(p);
@@ -75,7 +105,7 @@ public class StockMarket {
 	}
 
 	public void addStock(Player p, int i, int n) {
-		HashMap<Stock, Integer> a = getAccount(p);
+		Map<Stock, Integer> a = getAccount(p);
 		if (a.containsKey(getStock(i)))
 			a.put(getStock(i), getPlayerStock(p, i) + n);
 		else
@@ -83,16 +113,8 @@ public class StockMarket {
 	}
 
 	public void reduceStock(Player p, int i, int n) {
-		HashMap<Stock, Integer> a = getAccount(p);
+		Map<Stock, Integer> a = getAccount(p);
 		a.put(getStock(i), getPlayerStock(p, i) - n);
-	}
-
-	public void printAccount(Player p) {
-		IOHelper.showInfo("您的股票账户：");
-		this.getAccount(p).forEach((s, i) -> {
-			if (i > 0)
-				IOHelper.showInfo(s.getName() + ": " + i + "股, 价值：" + s.getPrice() * i + "元。");
-		});
 	}
 
 	public void refresh() {
@@ -114,28 +136,21 @@ public class StockMarket {
 
 	public void stockOperation(Player p) {
 		// print stock information
-		stocks.stream().forEach(s -> {
-			IOHelper.showInfo(
-					(stocks.indexOf(s) + 1) + ":\t" + s.getName() + "\t\t单价:\t" + String.format("%.2f", s.getPrice()));
-		});
+		IOHelper.showStocks(stocks);
+		IOHelper.printStockAccount(getAccount(p));
 		if (IOHelper.InputYN("是否进行股票交易")) {
-			// ops is a String array, which contains the transaction code
-			String ops[];
-			// (ops == null) means that the player wants to quit transaction
-			while ((ops = IOHelper.InputStockOp()) != null) {
-				// ops[1] is the ID of the stock
-				int i = Integer.parseInt(ops[1]);
-				// ops[2] is the amount
-				int n = Integer.parseInt(ops[2]);
+			StockTradeOperation op;
+			while ((op = IOHelper.InputStockOp()).getOpType() != StockTradeOpType.QUIT) {
+				int i = op.getIndex();
+				int n = op.getNum();
 				if (getStock(i) == null) {
 					IOHelper.alert("股票不存在！");
-					return;
+					continue;
 				} else {
 					// calculate the value of the stocks
 					int money = (int) (getStock(i).getPrice() * n);
-					switch (ops[0]) {
-					// buy stock
-					case "b":
+					switch (op.getOpType()) {
+					case BUY:
 						if (p.getDeposit() + p.getCash() >= money) {
 							IOHelper.alert("购入股票：" + getStock(i).getName() + " " + n + "股，花费" + money + "元。");
 							if (p.getDeposit() >= money) {
@@ -150,8 +165,7 @@ public class StockMarket {
 							IOHelper.alert("金钱不足。");
 						}
 						break;
-					// sell stock
-					case "s":
+					case SELL:
 						if (getPlayerStock(p, i) >= n) {
 							reduceStock(p, i, n);
 							p.setDeposit(p.getDeposit() + money);
@@ -159,6 +173,8 @@ public class StockMarket {
 						} else {
 							IOHelper.alert("股票不足。");
 						}
+						break;
+					default:
 						break;
 					}
 				}

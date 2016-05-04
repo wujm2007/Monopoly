@@ -1,10 +1,10 @@
 package entity;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class Estate extends Building {
-	private static final String icon = "◎";
-	private static final String type = "房产";
+	private static final String ICON = "◎";
+	private static final String TYPE = "房产";
 	private static final int MAX_LEVEL = 5;
 	private Player owner;
 	private int level;
@@ -14,12 +14,12 @@ public class Estate extends Building {
 
 	@Override
 	public String getOriginalIcon() {
-		return icon;
+		return ICON;
 	}
 
 	@Override
 	public String getType() {
-		return type;
+		return TYPE;
 	}
 
 	public Estate(String street, int number, double priceRate) {

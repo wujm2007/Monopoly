@@ -1,19 +1,42 @@
 package entity;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class Bank extends Building {
-	private static final String icon = "银";
-	private static final String type = "银行";
+	private static final String ICON = "银";
+	private static final String TYPE = "银行";
+
+	public enum BankOpType {
+		WITHDRAW, DEPOSITE, QUIT
+	}
+
+	public static class BankOperation {
+
+		private BankOpType op;
+		private int money;
+
+		public BankOperation(BankOpType op, int money) {
+			this.op = op;
+			this.money = money;
+		}
+
+		public BankOpType getOpType() {
+			return op;
+		}
+
+		public int getMoney() {
+			return money;
+		}
+	}
 
 	@Override
 	public String getIcon() {
-		return icon;
+		return ICON;
 	}
 
 	@Override
 	public String getType() {
-		return type;
+		return TYPE;
 	}
 
 	@Override
@@ -31,33 +54,37 @@ public class Bank extends Building {
 	}
 
 	private static void bankOperation(Player p) {
+		IOHelper.showBankAccountInfo(p);
 
-		IOHelper.showInfo("欢迎进入银行，您的资产情况如下：\n姓名：" + p.getName() + "\t现金：" + p.getCash() + "\t存款：" + p.getDeposit()
-				+ "\t总资产：" + p.getAsset());
+		while (true) {
+			BankOperation bkop = IOHelper.getBankOperation(p);
+			int money;
 
-		while (IOHelper.InputYN("是否存取款？")) {
-			if (IOHelper.InputYN("您是否需要存款？")) {
-				int money = IOHelper.InputInt("请输入存款金额");
+			switch (bkop.getOpType()) {
+			case DEPOSITE:
+				money = bkop.getMoney();
 				if (p.getCash() >= money) {
 					p.setCash(p.getCash() - money);
 					p.setDeposit(p.getDeposit() + money);
 				} else {
 					IOHelper.alert("您的现金不足。");
 				}
-			}
-			if (IOHelper.InputYN("您是否需要取款？")) {
-				int money = IOHelper.InputInt("请输入取款金额");
+				break;
+			case WITHDRAW:
+				money = bkop.getMoney();
 				if (p.getDeposit() >= money) {
 					p.setDeposit(p.getDeposit() - money);
 					p.setCash(p.getCash() + money);
 				} else {
 					IOHelper.alert("您的存款不足。");
 				}
+				break;
+			case QUIT:
+				return;
 			}
-			IOHelper.showInfo("您的资产情况如下：\n姓名：" + p.getName() + "\t现金：" + p.getCash() + "\t存款：" + p.getDeposit()
-					+ "\t总资产：" + p.getAsset() + "\t");
-		}
 
+			IOHelper.showBankAccountInfo(p);
+		}
 	}
 
 }

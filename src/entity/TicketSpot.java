@@ -1,17 +1,17 @@
 package entity;
 
 public class TicketSpot extends Building {
-	private static final String icon = "券";
-	private static final String type = "点券点";
+	private static final String ICON = "券";
+	private static final String TYPE = "点券点";
 
 	@Override
 	public String getIcon() {
-		return icon;
+		return ICON;
 	}
 
 	@Override
 	public String getType() {
-		return type;
+		return TYPE;
 	}
 
 	@Override

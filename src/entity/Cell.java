@@ -2,7 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class Cell {
 	private Map map;

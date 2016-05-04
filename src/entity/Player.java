@@ -3,7 +3,7 @@ package entity;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class Player {
 	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
@@ -187,6 +187,10 @@ public class Player {
 
 	public Game getGame() {
 		return getMap().getGame();
+	}
+
+	public Collection<Player> getPeers(boolean broken) {
+		return getMap().getGame().getPlayers(broken);
 	}
 
 	public boolean isClockWise() {

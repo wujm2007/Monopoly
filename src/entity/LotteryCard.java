@@ -1,14 +1,16 @@
 package entity;
 
-import biz.IOHelper;
+import biz_cmdLine.IOHelper;
 
 public class LotteryCard extends Card {
+	private static final String NAME = "彩票卡";
+	private static final String DESCRIPTION = "使用时可以操作本月的彩票开奖结果";
 
 	@Override
 	public int act(Player p) {
 		int n;
 		while (((n = IOHelper.InputInt("请输入位置本月彩票中奖号码：")) <= 0) || (n > LotterySpot.LOTTERY_NUM)) {
-			IOHelper.alert("Invalid position");
+			IOHelper.alert("请输入正确的彩票号码！");
 			n = IOHelper.InputInt("请输入位置本月彩票中奖号码：");
 		}
 		LotterySpot.setJackpot(n);
@@ -23,12 +25,12 @@ public class LotteryCard extends Card {
 
 	@Override
 	public String getName() {
-		return "彩票卡";
+		return NAME;
 	}
 
 	@Override
 	public String getDescription() {
-		return "使用时可以操作本月的彩票开奖结果";
+		return DESCRIPTION;
 	}
 
 }
