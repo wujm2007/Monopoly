@@ -146,14 +146,10 @@ public class Player {
 
 	public int cost(int cost) {
 		int totalCost = cost;
-		if (costCash(cost)) {
-			return totalCost;
-		} else {
+		if (!costCash(cost)) {
 			cost -= this.getCash();
 			this.costCash(this.getCash());
-			if (this.costDeposit(cost)) {
-				return totalCost;
-			} else {
+			if (!this.costDeposit(cost)) {
 				cost -= getDeposit();
 				this.costDeposit(this.getDeposit());
 				while ((cost > 0) && (!getEstates().isEmpty())) {
@@ -165,12 +161,13 @@ public class Player {
 				// more than the cost
 				if (cost > 0) {
 					this.broke();
+					return totalCost - cost;
 				} else {
 					this.addCash(0 - cost);
 				}
-				return totalCost - cost;
 			}
 		}
+		return totalCost;
 	}
 
 	public void broke() {
@@ -179,6 +176,7 @@ public class Player {
 		});
 		this.getGame().getStockMarket().writeoff(this);
 		this.isBroke = true;
+		IOHelper.alert(this.getName() + "破产。");
 	}
 
 	public boolean isBroke() {
