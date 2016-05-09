@@ -147,22 +147,26 @@ public class Player {
 	public int cost(int cost) {
 		int totalCost = cost;
 		if (costCash(cost)) {
-			return cost;
+			return totalCost;
 		} else {
-			cost -= this.cash;
+			cost -= this.getCash();
+			this.costCash(this.getCash());
 			if (this.costDeposit(cost)) {
-				return cost;
+				return totalCost;
 			} else {
 				cost -= getDeposit();
+				this.costDeposit(this.getDeposit());
 				while ((cost > 0) && (!getEstates().isEmpty())) {
 					Estate e = getEstates().iterator().next();
 					cost -= e.getPrice();
 					e.setOwner(null);
 				}
+				// cost may be negative if the price of the house sold is
+				// more than the cost
 				if (cost > 0) {
 					this.broke();
 				} else {
-					this.costCash(cost);
+					this.addCash(0 - cost);
 				}
 				return totalCost - cost;
 			}
