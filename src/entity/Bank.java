@@ -63,18 +63,16 @@ public class Bank extends Building {
 			switch (bkop.getOpType()) {
 			case DEPOSITE:
 				money = bkop.getMoney();
-				if (p.getCash() >= money) {
-					p.setCash(p.getCash() - money);
-					p.setDeposit(p.getDeposit() + money);
+				if (p.costCash(money)) {
+					p.addDeposit(money);
 				} else {
 					IOHelper.alert("您的现金不足。");
 				}
 				break;
 			case WITHDRAW:
 				money = bkop.getMoney();
-				if (p.getDeposit() >= money) {
-					p.setDeposit(p.getDeposit() - money);
-					p.setCash(p.getCash() + money);
+				if (p.costDeposit(money)) {
+					p.addCash(money);
 				} else {
 					IOHelper.alert("您的存款不足。");
 				}

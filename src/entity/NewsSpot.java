@@ -41,7 +41,7 @@ public class NewsSpot extends Building {
 				if (player.getEstates().size() > p.getEstates().size())
 					landlord = player;
 			}
-			landlord.setCash(landlord.getCash() + randMoney);
+			landlord.addCash(randMoney);
 			IOHelper.alert("公开表扬第一地主 " + landlord.getName() + " 奖励 " + randMoney + " 元。");
 			break;
 		case 1:
@@ -50,7 +50,7 @@ public class NewsSpot extends Building {
 				if (player.getEstates().size() < p.getEstates().size())
 					poorMan = player;
 			}
-			poorMan.setCash(poorMan.getCash() + randMoney);
+			poorMan.addCash(randMoney);
 			IOHelper.alert("公开补助土地最少者 " + poorMan.getName() + " " + randMoney + " 元。");
 			break;
 		case 2:

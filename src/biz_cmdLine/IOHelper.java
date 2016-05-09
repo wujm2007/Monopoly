@@ -15,6 +15,7 @@ import entity.Bank.BankOperation;
 public class IOHelper {
 	static Scanner sc;
 
+	// return true if the input is Y and false if the input is N
 	public static boolean InputYN(String msg) {
 		sc = new Scanner(System.in);
 		System.out.println(msg + " (Y/N)");
@@ -30,6 +31,7 @@ public class IOHelper {
 		}
 	}
 
+	// return the integer input
 	public static int InputInt(String msg) {
 		sc = new Scanner(System.in);
 		System.out.println(msg + ": ");
@@ -60,6 +62,7 @@ public class IOHelper {
 		});
 	}
 
+	// get StockTradeOperation (see entity.StockMarket.StockTradeOperation)
 	public static StockTradeOperation InputStockOp() {
 		sc = new Scanner(System.in);
 		System.out.println("请输入操作码,输入q退出(如：b 1 100 //买入1号股票100股)");
@@ -102,10 +105,12 @@ public class IOHelper {
 		return null;
 	}
 
+	// Output the msg
 	public static void alert(String msg) {
 		System.out.println(msg);
 	}
 
+	// Output the msg (same as alert() in command line version)
 	public static void showInfo(String msg) {
 		System.out.println(msg);
 	}
@@ -115,6 +120,7 @@ public class IOHelper {
 				+ p.getAsset());
 	}
 
+	// get StockTradeOperation (see entity.Bank.BankOperation)
 	public static BankOperation getBankOperation(Player p) {
 		int money;
 		if (InputYN("是否存取款？")) {
@@ -136,6 +142,7 @@ public class IOHelper {
 		}
 	}
 
+	// return the lottery index bought by p
 	public static int getLotteryOperation(Player p) {
 		if (InputYN("是否购买彩票")) {
 			int n;

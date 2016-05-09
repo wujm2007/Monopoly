@@ -57,8 +57,7 @@ public class LotterySpot extends Building {
 		IOHelper.showLotteryInfo();
 		int i;
 		if ((i = IOHelper.getLotteryOperation(p)) != -1) {
-			if (LOTTERY_PRICE <= p.getCash()) {
-				p.setCash(p.getCash() - LOTTERY_PRICE);
+			if (p.costCash(LOTTERY_PRICE)) {
 				LotterySpot.setLotteryOwner(i, p);
 				prize += LOTTERY_PRICE;
 			} else {
@@ -77,7 +76,7 @@ public class LotterySpot extends Building {
 			jackpot = (int) (Math.random() * LOTTERY_NUM);
 		IOHelper.showLotteryWinner();
 		if ((owner[jackpot] != null) && (!owner[jackpot].isBroke())) {
-			owner[jackpot].setCash(owner[jackpot].getCash() + prize);
+			owner[jackpot].addCash(prize);
 			prize = 0;
 		}
 		Arrays.fill(owner, null);

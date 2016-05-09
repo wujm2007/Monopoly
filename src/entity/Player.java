@@ -15,11 +15,11 @@ public class Player {
 			this.deposit = ORIGINAL_DEPOSIT;
 		}
 
-		public int getDeposit() {
+		private int getDeposit() {
 			return deposit;
 		}
 
-		public void setDeposit(int deposit) {
+		private void setDeposit(int deposit) {
 			this.deposit = deposit;
 		}
 
@@ -92,6 +92,20 @@ public class Player {
 		this.account.setDeposit(m);
 	}
 
+	public void addDeposit(int money) {
+		if (money > 0)
+			this.account.deposit += money;
+	}
+
+	public boolean costDeposit(int money) {
+		if ((money > 0) && (this.account.deposit >= money)) {
+			this.account.deposit -= money;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public ArrayList<Card> getCards() {
 		return this.cards;
 	}
@@ -108,6 +122,20 @@ public class Player {
 		this.cash = cash;
 	}
 
+	public void addCash(int money) {
+		if (money > 0)
+			this.cash += money;
+	}
+
+	public boolean costCash(int money) {
+		if ((money > 0) && (this.cash >= money)) {
+			this.cash -= money;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public int getTickets() {
 		return tickets;
 	}
@@ -118,13 +146,11 @@ public class Player {
 
 	public int cost(int cost) {
 		int totalCost = cost;
-		if (getCash() >= cost) {
-			setCash(getCash() - cost);
+		if (costCash(cost)) {
 			return cost;
 		} else {
-			cost -= getCash();
-			if (getDeposit() >= cost) {
-				setDeposit(getDeposit() - cost);
+			cost -= this.cash;
+			if (this.costDeposit(cost)) {
 				return cost;
 			} else {
 				cost -= getDeposit();
@@ -136,7 +162,7 @@ public class Player {
 				if (cost > 0) {
 					this.broke();
 				} else {
-					setCash(getCash() - cost);
+					this.costCash(cost);
 				}
 				return totalCost - cost;
 			}
@@ -174,7 +200,7 @@ public class Player {
 		for (Estate e : getEstates()) {
 			estatesValue += e.getPrice();
 		}
-		return getCash() + getDeposit() + estatesValue;
+		return this.cash + getDeposit() + estatesValue;
 	}
 
 	public Map getMap() {

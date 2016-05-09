@@ -42,8 +42,8 @@ public class Estate extends Building {
 		return level;
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
+	public void upgrade() {
+		this.level++;
 	}
 
 	public int getOriginalPrice() {
@@ -82,8 +82,7 @@ public class Estate extends Building {
 	public void stay(Player p) {
 		if (this.getOwner() == null) {
 			if (IOHelper.InputYN("是否购买" + this.getName() + "？价格: " + this.getPrice() + "元。")) {
-				if (p.getCash() >= this.getPrice()) {
-					p.cost(this.getPrice());
+				if (p.costCash(this.getPrice())) {
 					this.setOwner(p);
 					IOHelper.alert("购买成功。");
 				} else {
@@ -93,9 +92,8 @@ public class Estate extends Building {
 		} else if (this.getOwner() == p) {
 			if (this.getLevel() < Estate.MAX_LEVEL - 1) {
 				if (IOHelper.InputYN("是否升级" + this.getName() + "？价格: " + this.getUpgradeCost() + "元。")) {
-					if (p.getCash() >= this.getUpgradeCost()) {
-						p.cost(this.getUpgradeCost());
-						this.setLevel(this.getLevel() + 1);
+					if (p.costCash(this.getUpgradeCost())) {
+						this.upgrade();
 						IOHelper.alert("成功升级至" + getLevel() + "级。");
 					} else {
 						IOHelper.alert("无法支付");
@@ -105,7 +103,7 @@ public class Estate extends Building {
 		} else {
 			IOHelper.alert("您需要支付" + this.getName() + "的过路费: " + this.getPrice() + "元。");
 			int toll = p.cost(this.getPrice());
-			this.getOwner().setCash(this.getOwner().getCash() + toll);
+			this.getOwner().addCash(toll);
 		}
 	}
 

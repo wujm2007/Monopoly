@@ -4,10 +4,10 @@ public abstract class Building {
 
 	public abstract String getIcon();
 
-	// the action when a player passes by
+	// the action should be taken when a player passes by
 	protected abstract void passby(Player p);
 
-	// the action when a player stays
+	// the action should be taken when a player stays
 	protected abstract void stay(Player p);
 
 	public Player getOwner() {
