@@ -2,11 +2,12 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import biz_cmdLine.IOHelper;
 
 public class Player {
-	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
+	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 1000, ORIGINAL_DEPOSIT = 10000;
 
 	private class BankAccount {
 		private int deposit;
@@ -26,7 +27,7 @@ public class Player {
 	}
 
 	private String name, icon, estateIcon;
-	private ArrayList<Card> cards;
+	private List<Card> cards;
 	private int cash, tickets;
 	private BankAccount account;
 	private Map map;
@@ -47,7 +48,18 @@ public class Player {
 		this.clockwise = true;
 		this.cards = new ArrayList<Card>();
 		this.addCard(new RoadBlock());
+		this.addCard(new RoadBlock());
+		this.addCard(new RoadBlock());
 		this.addCard(new ControlDice());
+		this.addCard(new ControlDice());
+		this.addCard(new ControlDice());
+		this.addCard(new ControlDice());
+		this.addCard(new ControlDice());
+		this.addCard(new AverageCashCard());
+		this.addCard(new BlackCard());
+		this.addCard(new RedCard());
+		this.addCard(new BuyEstateCard());
+		this.addCard(new LotteryCard());
 	}
 
 	public void setSteps(int steps) {
@@ -58,7 +70,6 @@ public class Player {
 		if (steps == 0) {
 			steps = (int) (Math.random() * 6) + 1;
 		}
-		IOHelper.alert("您前进了" + steps + "步。");
 		for (int i = 0; i < steps; i++) {
 			Cell cell = map.getCell(getPosition());
 			if (cell.isBlocked()) {
@@ -70,8 +81,9 @@ public class Player {
 			cell.getNextCell().addPlayer(this);
 			if (i != steps - 1)
 				cell.getNextCell().passby(this);
-			else
+			else {
 				cell.getNextCell().stay(this);
+			}
 		}
 		steps = 0;
 	}
@@ -106,7 +118,7 @@ public class Player {
 		}
 	}
 
-	public ArrayList<Card> getCards() {
+	public List<Card> getCards() {
 		return this.cards;
 	}
 

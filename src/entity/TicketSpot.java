@@ -1,5 +1,7 @@
 package entity;
 
+import biz_cmdLine.IOHelper;
+
 public class TicketSpot extends Building {
 	private static final String ICON = "券";
 	private static final String TYPE = "点券点";
@@ -23,6 +25,7 @@ public class TicketSpot extends Building {
 	public void stay(Player p) {
 		int rand = (((int) (Math.random() * 10)) + 1) * 10;
 		p.setTickets(p.getTickets() + rand);
+		IOHelper.alert("您获得" + rand + "点券.");
 	}
 
 }

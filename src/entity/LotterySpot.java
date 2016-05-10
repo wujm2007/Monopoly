@@ -72,8 +72,9 @@ public class LotterySpot extends Building {
 	}
 
 	public static void announceWinner() {
-		if (jackpot != -1)
+		if (jackpot == -1) {
 			jackpot = (int) (Math.random() * LOTTERY_NUM);
+		}
 		IOHelper.showLotteryWinner();
 		if ((owner[jackpot] != null) && (!owner[jackpot].isBroke())) {
 			owner[jackpot].addCash(prize);

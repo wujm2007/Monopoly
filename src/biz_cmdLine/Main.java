@@ -1,13 +1,32 @@
 package biz_cmdLine;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import entity.*;;
 
 public class Main {
 	private static Game g;
 
 	public static void main(String args[]) {
-		g = new Game(4);
+		g = new Game(2);
+
+		// for debugging
+		// ArrayList<Player> players = (ArrayList<Player>) g.getPlayers(true);
+		// g.getMap().getCells().stream().filter(c -> (c.getBuilding()
+		// instanceof Estate))
+		// .map(c -> (Estate) c.getBuilding()).forEach(e -> {
+		// if ((e.getName().equals("水星街1号")) || (e.getName().equals("水星街2号")))
+		// e.setOwner(players.get(0));
+		// else
+		// e.setOwner(players.get(1));
+		// });
+		// g.getPlayers(true).forEach(p -> {
+		// p.setCash(0);
+		// p.setDeposit(0);
+		// });
+		//
+
 		IOHelper.showInfo("========================\t游   戏   开   始\t========================");
 		while (true) {
 			g.addDay();
@@ -80,7 +99,7 @@ public class Main {
 	private static ArrayList<String> generateIconMap(boolean original, Player p) {
 		ArrayList<String> rtn = new ArrayList<String>();
 		g.getMap().getCells().forEach(c -> {
-			if (c.hasPlayer(p))
+			if ((c.hasPlayer(p)) && (!original))
 				rtn.add(p.getIcon());
 			else
 				rtn.add(c.getIcon(original));
@@ -93,21 +112,23 @@ public class Main {
 		ArrayList<String> iconMap = generateIconMap(original, p);
 		int length = iconMap.size();
 		for (int i = 0; i < 20; i++)
-			System.out.print(iconMap.get(i));
+			System.out.print(iconMap.get(i) + "\t");
+		System.out.printf("\n");
 		for (int i = 20; i < 20 + (length - 40) / 2; i++) {
 			int j = length - 1 + 20 - i;
-			System.out.printf("\n%s                                     %s", iconMap.get(i), iconMap.get(j));
+			System.out.printf("\n%s\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t%s", iconMap.get(j), iconMap.get(i));
+			System.out.printf("\n");
 		}
 		System.out.printf("\n");
 		for (int i = length - 1 - (length - 40) / 2; i > length - 1 - (length - 40) / 2 - 20; i--) {
-			System.out.print(iconMap.get(i));
+			System.out.print(iconMap.get(i) + "\t");
 		}
-		System.out.printf("\n");
+		System.out.printf("\n\n");
 	}
 
 	// print ustItem menu
 	private static void useItem(Player p) {
-		ArrayList<Card> cards = p.getCards();
+		List<Card> cards = p.getCards();
 		if (cards.size() == 0) {
 			IOHelper.showInfo("您没有卡片。");
 			return;
@@ -128,7 +149,6 @@ public class Main {
 			IOHelper.alert("编号错误。");
 			useItem(p);
 		}
-
 	}
 
 	// print asset of players

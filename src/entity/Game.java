@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class Game {
 
-	private static final String STR_MAP = "5水星街,3,7金星街,2,5火星街,4,7,7,7,7,7,6,6,6,7,7,7,7,7,5木星街,1,5土星街,5,6天王星街,3,6海王星街,2,5蔡伦路,4,7,6,6,6,5,5,1,5,5";
+	private static final String STR_MAP = "5水星街,4,1,3,5金星街,2,5火星街,4,7,7,7,7,7,6,6,6,7,7,7,7,7,5木星街,1,5土星街,5,6天王星街,3,6海王星街,2,5蔡伦路,4,7,6,6,6,5,5,1,5,5";
 	private static final String[] PLAYER_ICONS = { "■", "●", "★", "▲" };
 	private static final String[] ESTATE_ICONS = { "□", "○", "☆", "△" };
 	private Map map;

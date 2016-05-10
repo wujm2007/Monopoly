@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import biz_cmdLine.IOHelper;
 
 public class Store extends Building {
-	private static final String icon = "新";
-	private static final String type = "新闻点";
+	private static final String icon = "道";
+	private static final String type = "道具店";
 
 	@Override
 	public String getIcon() {
