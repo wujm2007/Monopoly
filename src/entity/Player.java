@@ -7,7 +7,7 @@ import java.util.List;
 import biz_cmdLine.IOHelper;
 
 public class Player {
-	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 1000, ORIGINAL_DEPOSIT = 10000;
+	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
 
 	private class BankAccount {
 		private int deposit;
@@ -48,18 +48,7 @@ public class Player {
 		this.clockwise = true;
 		this.cards = new ArrayList<Card>();
 		this.addCard(new RoadBlock());
-		this.addCard(new RoadBlock());
-		this.addCard(new RoadBlock());
 		this.addCard(new ControlDice());
-		this.addCard(new ControlDice());
-		this.addCard(new ControlDice());
-		this.addCard(new ControlDice());
-		this.addCard(new ControlDice());
-		this.addCard(new AverageCashCard());
-		this.addCard(new BlackCard());
-		this.addCard(new RedCard());
-		this.addCard(new BuyEstateCard());
-		this.addCard(new LotteryCard());
 	}
 
 	public void setSteps(int steps) {

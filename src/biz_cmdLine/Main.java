@@ -2,8 +2,8 @@ package biz_cmdLine;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import entity.*;;
+import debug.Debug;
+import entity.*;
 
 public class Main {
 	private static Game g;
@@ -11,21 +11,7 @@ public class Main {
 	public static void main(String args[]) {
 		g = new Game(2);
 
-		// for debugging
-		// ArrayList<Player> players = (ArrayList<Player>) g.getPlayers(true);
-		// g.getMap().getCells().stream().filter(c -> (c.getBuilding()
-		// instanceof Estate))
-		// .map(c -> (Estate) c.getBuilding()).forEach(e -> {
-		// if ((e.getName().equals("水星街1号")) || (e.getName().equals("水星街2号")))
-		// e.setOwner(players.get(0));
-		// else
-		// e.setOwner(players.get(1));
-		// });
-		// g.getPlayers(true).forEach(p -> {
-		// p.setCash(0);
-		// p.setDeposit(0);
-		// });
-		//
+		// Debug.debug(g);
 
 		IOHelper.showInfo("========================\t游   戏   开   始\t========================");
 		while (true) {
