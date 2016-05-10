@@ -81,6 +81,7 @@ public class LotterySpot extends Building {
 			prize = 0;
 		}
 		Arrays.fill(owner, null);
+		jackpot = -1;
 	}
 
 	public static int getJackpot() {
