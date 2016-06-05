@@ -1,13 +1,19 @@
 package entity;
 
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-
-import biz_cmdLine.IOHelper;
+import javax.swing.ImageIcon;
+import javax.swing.Timer;
 
 public class Player {
 	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
+
+	private Timer timer;
 
 	private class BankAccount {
 		private int deposit;
@@ -23,17 +29,22 @@ public class Player {
 		private void setDeposit(int deposit) {
 			this.deposit = deposit;
 		}
-
 	}
 
 	private String name, icon, estateIcon;
 	private List<Card> cards;
-	private int cash, tickets;
+	private int cash, tickets, steps = 0;
 	private BankAccount account;
 	private Map map;
-	private boolean isBroke;
-	private int steps = 0;
-	private boolean clockwise;
+	private boolean isBroke, isClockwise;
+
+	public boolean isClockwise() {
+		return isClockwise;
+	}
+
+	public void setClockwise(boolean isClockwise) {
+		this.isClockwise = isClockwise;
+	}
 
 	public Player(Map map, String name, String icon, String estateIcon) {
 		this.map = map;
@@ -45,36 +56,66 @@ public class Player {
 		this.account = new BankAccount();
 		this.isBroke = false;
 		this.map.getCell(0).addPlayer(this);
-		this.clockwise = true;
+		this.isClockwise = true;
 		this.cards = new ArrayList<Card>();
-		this.addCard(new RoadBlock());
-		this.addCard(new ControlDice());
+		this.addCard(RoadBlock.getInstance());
+		this.addCard(ControlDice.getInstance());
+		this.addCard(TurnaroundCard.getInstance());
 	}
 
 	public void setSteps(int steps) {
 		this.steps = steps;
 	}
 
+	public void goWithTimer() {
+		if (steps == 0) {
+			steps = (int) (Math.random() * 6) + 1;
+		}
+		this.getGame().changeDiceImg(steps);
+		timer = new Timer(500, new ActionListener() {
+			int stepsLeft = steps;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				nextStep(--stepsLeft, true);
+			}
+		});
+		timer.start();
+	}
+
 	public void go() {
 		if (steps == 0) {
 			steps = (int) (Math.random() * 6) + 1;
 		}
-		for (int i = 0; i < steps; i++) {
-			Cell cell = map.getCell(getPosition());
-			if (cell.isBlocked()) {
-				cell.stay(this);
-				steps = 0;
-				return;
-			}
-			cell.removePlayer(this);
-			cell.getNextCell().addPlayer(this);
-			if (i != steps - 1)
-				cell.getNextCell().passby(this);
-			else {
-				cell.getNextCell().stay(this);
-			}
+		this.getGame().changeDiceImg(steps);
+		for (int i = steps; i != 0;) {
+			nextStep(--i, isClockwise);
 		}
 		steps = 0;
+	}
+
+	public void nextStep(int stepsLeft, boolean isClockWise) {
+		if (steps == 0) {
+			if (timer != null)
+				timer.stop();
+			return;
+		}
+		Cell cell = map.getCell(getPosition());
+		if (cell.isBlocked()) {
+			cell.stay(this);
+			steps = 0;
+			return;
+		}
+		cell.removePlayer(this);
+		cell.getNextCell(isClockwise).addPlayer(this);
+		if (stepsLeft != 0)
+			cell.getNextCell(isClockwise).passby(this);
+		else {
+			cell.getNextCell(isClockwise).stay(this);
+			steps = 0;
+			if (timer != null)
+				timer.stop();
+		}
 	}
 
 	public int getPosition() {
@@ -82,6 +123,10 @@ public class Player {
 	}
 
 	public String getName() {
+		return name;
+	}
+
+	public String toString() {
 		return name;
 	}
 
@@ -107,12 +152,19 @@ public class Player {
 		}
 	}
 
-	public List<Card> getCards() {
-		return this.cards;
+	public HashMap<Card, Integer> getCards() {
+		HashMap<Card, Integer> result = new HashMap<Card, Integer>();
+		this.cards.forEach(c -> {
+			if (result.containsKey(c))
+				result.put(c, result.get(c) + 1);
+			else
+				result.put(c, 1);
+		});
+		return result;
 	}
 
 	public void addCard(Card c) {
-		getCards().add(c);
+		this.cards.add(c);
 	}
 
 	public int getCash() {
@@ -177,7 +229,7 @@ public class Player {
 		});
 		this.getGame().getStockMarket().writeoff(this);
 		this.isBroke = true;
-		IOHelper.alert(this.getName() + "破产。");
+		this.getGame().io().alert(this.getName() + "破产。");
 	}
 
 	public boolean isBroke() {
@@ -211,18 +263,33 @@ public class Player {
 	}
 
 	public void turnBack() {
-		this.clockwise = !clockwise;
+		this.isClockwise = !isClockwise;
 	}
 
 	public Game getGame() {
 		return getMap().getGame();
 	}
 
-	public Collection<Player> getPeers(boolean broken) {
+	public List<Player> getPeers(boolean broken) {
 		return getMap().getGame().getPlayers(broken);
 	}
 
-	public boolean isClockWise() {
-		return this.clockwise;
+	public Image getAvatar() {
+		Image image = (new ImageIcon(icon)).getImage();
+		return image;
+	}
+
+	public Image getEstateImage(int level) {
+		Image image = (new ImageIcon(estateIcon + level + ".png")).getImage();
+		return image;
+	}
+
+	public Player getNextPlayer() {
+		List<Player> peers = this.getPeers(false);
+		return peers.get((peers.indexOf(this) + 1) % peers.size());
+	}
+
+	public void removeCard(Card card) {
+		cards.remove(card);
 	}
 }

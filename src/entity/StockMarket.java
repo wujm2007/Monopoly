@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import biz_cmdLine.IOHelper;
-
 public class StockMarket {
 
 	public class Stock {
@@ -135,16 +133,17 @@ public class StockMarket {
 	}
 
 	public void stockOperation(Player p) {
+		IOHelper IO = p.getGame().io();
 		// print stock information
-		IOHelper.showStocks(stocks);
-		IOHelper.printStockAccount(getAccount(p));
-		if (IOHelper.InputYN("是否进行股票交易")) {
+		IO.showStocks(stocks);
+		IO.printStockAccount(getAccount(p));
+		if (IO.InputYN("是否进行股票交易")) {
 			StockTradeOperation op;
-			while ((op = IOHelper.InputStockOp()).getOpType() != StockTradeOpType.QUIT) {
+			while ((op = IO.InputStockOp()).getOpType() != StockTradeOpType.QUIT) {
 				int i = op.getIndex();
 				int n = op.getNum();
 				if (getStock(i) == null) {
-					IOHelper.alert("股票不存在！");
+					IO.alert("股票不存在！");
 					continue;
 				} else {
 					// calculate the value of the stocks
@@ -152,7 +151,7 @@ public class StockMarket {
 					switch (op.getOpType()) {
 					case BUY:
 						if (p.getDeposit() + p.getCash() >= money) {
-							IOHelper.alert("购入股票：" + getStock(i).getName() + " " + n + "股，花费" + money + "元。");
+							IO.alert("购入股票：" + getStock(i).getName() + " " + n + "股，花费" + money + "元。");
 							if (!p.costDeposit(money)) {
 								money -= p.getDeposit();
 								p.costDeposit(p.getDeposit());
@@ -160,16 +159,16 @@ public class StockMarket {
 							}
 							addStock(p, i, n);
 						} else {
-							IOHelper.alert("金钱不足。");
+							IO.alert("金钱不足。");
 						}
 						break;
 					case SELL:
 						if (getPlayerStock(p, i) >= n) {
 							reduceStock(p, i, n);
 							p.addDeposit(money);
-							IOHelper.alert("卖出股票：" + getStock(i).getName() + " " + n + "股，获得" + money + "元。");
+							IO.alert("卖出股票：" + getStock(i).getName() + " " + n + "股，获得" + money + "元。");
 						} else {
-							IOHelper.alert("股票不足。");
+							IO.alert("股票不足。");
 						}
 						break;
 					default:

@@ -1,6 +1,6 @@
 package entity;
 
-import biz_cmdLine.IOHelper;
+import view.EstatePanel;
 
 public class Estate extends Building {
 	private static final String ICON = "◎";
@@ -11,6 +11,7 @@ public class Estate extends Building {
 	private int price;
 	private int number;
 	private String street;
+	private EstatePanel panel;
 
 	@Override
 	public String getOriginalIcon() {
@@ -36,6 +37,8 @@ public class Estate extends Building {
 
 	public void setOwner(Player owner) {
 		this.owner = owner;
+		if (this.panel != null)
+			this.panel.refresh();
 	}
 
 	public int getLevel() {
@@ -44,6 +47,8 @@ public class Estate extends Building {
 
 	public void upgrade() {
 		this.level++;
+		if (this.panel != null)
+			this.panel.refresh();
 	}
 
 	public int getOriginalPrice() {
@@ -80,28 +85,29 @@ public class Estate extends Building {
 
 	@Override
 	public void stay(Player p) {
+		IOHelper IO = p.getGame().io();
 		if (this.getOwner() == null) {
-			if (IOHelper.InputYN("是否购买" + this.getName() + "？价格: " + this.getPrice() + "元。")) {
+			if (IO.InputYN("是否购买" + this.getName() + "？价格: " + this.getPrice() + "元。")) {
 				if (p.costCash(this.getPrice())) {
 					this.setOwner(p);
-					IOHelper.alert("购买成功。");
+					IO.alert("购买成功。");
 				} else {
-					IOHelper.alert("无法支付");
+					IO.alert("无法支付");
 				}
 			}
 		} else if (this.getOwner() == p) {
 			if (this.getLevel() < Estate.MAX_LEVEL - 1) {
-				if (IOHelper.InputYN("是否升级" + this.getName() + "？价格: " + this.getUpgradeCost() + "元。")) {
+				if (IO.InputYN("是否升级" + this.getName() + "？价格: " + this.getUpgradeCost() + "元。")) {
 					if (p.costCash(this.getUpgradeCost())) {
 						this.upgrade();
-						IOHelper.alert("成功升级至" + getLevel() + "级。");
+						IO.alert("成功升级至" + getLevel() + "级。");
 					} else {
-						IOHelper.alert("无法支付");
+						IO.alert("无法支付");
 					}
 				}
 			}
 		} else {
-			IOHelper.alert("您需要支付" + this.getName() + "的过路费: " + this.getPrice() + "元。");
+			IO.alert("您需要支付" + this.getName() + "的过路费: " + this.getPrice() + "元。");
 			int toll = p.cost(this.getPrice());
 			this.getOwner().addCash(toll);
 		}
@@ -123,6 +129,11 @@ public class Estate extends Building {
 
 	public String getStreet() {
 		return this.street;
+	}
+
+	public void setPanel(EstatePanel panel) {
+		this.panel = panel;
+		panel.setEstate(this);
 	}
 
 }

@@ -1,14 +1,16 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map {
 
 	private Game game;
-	private ArrayList<Cell> cells = new ArrayList<Cell>();
+	private List<Cell> cells;
 
 	public Map(Game game) {
 		this.game = game;
+		this.cells = new ArrayList<Cell>();
 	}
 
 	public Game getGame() {
@@ -23,7 +25,7 @@ public class Map {
 		cells.add(c);
 	}
 
-	public ArrayList<Cell> getCells() {
+	public List<Cell> getCells() {
 		return cells;
 	}
 

@@ -2,8 +2,6 @@ package entity;
 
 import java.util.Arrays;
 
-import biz_cmdLine.IOHelper;
-
 public class LotterySpot extends Building {
 	private static final String ICON = "彩";
 	private static final String TYPE = "彩票点";
@@ -54,14 +52,15 @@ public class LotterySpot extends Building {
 	}
 
 	private static void lotteryOperation(Player p) {
-		IOHelper.showLotteryInfo();
+		IOHelper IO = p.getGame().io();
+		IO.showLotteryInfo();
 		int i;
-		if ((i = IOHelper.getLotteryOperation(p)) != -1) {
+		if ((i = IO.getLotteryOperation(p)) != -1) {
 			if (p.costCash(LOTTERY_PRICE)) {
 				LotterySpot.setLotteryOwner(i, p);
 				prize += LOTTERY_PRICE;
 			} else {
-				IOHelper.alert("现金不足。");
+				IO.alert("现金不足。");
 			}
 		}
 	}
@@ -71,11 +70,11 @@ public class LotterySpot extends Building {
 			jackpot = j - 1;
 	}
 
-	public static void announceWinner() {
+	public static void announceWinner(IOHelper IO) {
 		if (jackpot == -1) {
 			jackpot = (int) (Math.random() * LOTTERY_NUM);
 		}
-		IOHelper.showLotteryWinner();
+		IO.showLotteryWinner();
 		if ((owner[jackpot] != null) && (!owner[jackpot].isBroke())) {
 			owner[jackpot].addCash(prize);
 			prize = 0;

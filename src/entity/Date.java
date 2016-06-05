@@ -1,8 +1,9 @@
 package entity;
 
 public class Date {
-	private int year = 2016, month = 1, day = 0;
+	private int year = 2016, month = 1, day = 0, dayOfWeek = 4;
 	private int dayOfMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	private static String dayName[] = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 	private Game game;
 
 	public Date(Game game) {
@@ -25,13 +26,18 @@ public class Date {
 		return day;
 	}
 
+	public String getDayOfWeek() {
+		return dayName[dayOfWeek];
+	}
+
 	public void addDay() {
 		day++;
+		dayOfWeek = (dayOfWeek + 1) % 7;
 		game.getStockMarket().refresh();
 		if (day > dayOfMonth[month - 1]) {
 			month++;
 			day = 1;
-			LotterySpot.announceWinner();
+			LotterySpot.announceWinner(game.io());
 			game.getPlayers(false).forEach(p -> {
 				Bank.payInterest(p);
 			});
@@ -44,5 +50,6 @@ public class Date {
 				dayOfMonth[1] = 28;
 			month = 1;
 		}
+		this.game.updateInfo();
 	}
 }

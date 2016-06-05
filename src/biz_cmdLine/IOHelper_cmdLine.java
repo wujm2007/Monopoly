@@ -11,12 +11,25 @@ import entity.StockMarket.StockTradeOpType;
 import entity.StockMarket.StockTradeOperation;
 import entity.Bank.BankOpType;
 import entity.Bank.BankOperation;
+import entity.IOHelper;
 
-public class IOHelper {
-	static Scanner sc;
+public class IOHelper_cmdLine extends IOHelper {
+	private static IOHelper instance;
+
+	private IOHelper_cmdLine() {
+	};
+
+	public static IOHelper getInstance() {
+		if (instance == null) {
+			return (instance = new IOHelper_cmdLine());
+		}
+		return instance;
+	}
+
+	private Scanner sc;
 
 	// return true if the input is Y and false if the input is N
-	public static boolean InputYN(String msg) {
+	public boolean InputYN(String msg) {
 		sc = new Scanner(System.in);
 		System.out.println(msg + " (Y/N)");
 		System.out.print("> ");
@@ -32,7 +45,7 @@ public class IOHelper {
 	}
 
 	// return the integer input
-	public static int InputInt(String msg) {
+	public int InputInt(String msg) {
 		sc = new Scanner(System.in);
 		System.out.println(msg + ": ");
 		System.out.print("> ");
@@ -47,14 +60,14 @@ public class IOHelper {
 		return input;
 	}
 
-	public static void showStocks(List<Stock> stocks) {
+	public void showStocks(List<Stock> stocks) {
 		showInfo("股票行情：");
 		stocks.stream().forEach(s -> {
 			showInfo((stocks.indexOf(s) + 1) + ":\t" + s.getName() + "\t\t单价:\t" + String.format("%.2f", s.getPrice()));
 		});
 	}
 
-	public static void printStockAccount(Map<Stock, Integer> account) {
+	public void printStockAccount(Map<Stock, Integer> account) {
 		showInfo("您的股票账户：");
 		account.forEach((s, i) -> {
 			if (i > 0)
@@ -63,7 +76,7 @@ public class IOHelper {
 	}
 
 	// get StockTradeOperation (see entity.StockMarket.StockTradeOperation)
-	public static StockTradeOperation InputStockOp() {
+	public StockTradeOperation InputStockOp() {
 		sc = new Scanner(System.in);
 		System.out.println("请输入操作码,输入q退出(如：b 1 100 //买入1号股票100股)");
 		System.out.print("> ");
@@ -106,22 +119,22 @@ public class IOHelper {
 	}
 
 	// Output the msg
-	public static void alert(String msg) {
+	public void alert(String msg) {
 		System.out.println(msg);
 	}
 
 	// Output the msg (same as alert() in command line version)
-	public static void showInfo(String msg) {
+	public void showInfo(String msg) {
 		System.out.println(msg);
 	}
 
-	public static void showBankAccountInfo(Player p) {
+	public void showBankAccountInfo(Player p) {
 		showInfo("您的资产情况如下：\n姓名：" + p.getName() + "\t现金：" + p.getCash() + "\t存款：" + p.getDeposit() + "\t总资产："
 				+ p.getAsset());
 	}
 
 	// get StockTradeOperation (see entity.Bank.BankOperation)
-	public static BankOperation getBankOperation(Player p) {
+	public BankOperation getBankOperation(Player p) {
 		int money;
 		if (InputYN("是否存取款？")) {
 			if (InputYN("您是否需要存款？")) {
@@ -135,7 +148,7 @@ public class IOHelper {
 		return new BankOperation(BankOpType.QUIT, 0);
 	}
 
-	public static void showLotteryInfo() {
+	public void showLotteryInfo() {
 		for (int i = 0; i < LotterySpot.LOTTERY_NUM; i++) {
 			showInfo("No." + (i + 1) + ": "
 					+ (LotterySpot.getLotteryOwner(i) == null ? "无人购买" : LotterySpot.getLotteryOwner(i).getName()));
@@ -143,7 +156,7 @@ public class IOHelper {
 	}
 
 	// return the lottery index bought by p
-	public static int getLotteryOperation(Player p) {
+	public int getLotteryOperation(Player p) {
 		if (InputYN("是否购买彩票")) {
 			int n;
 			while ((n = InputInt("请输入想要购买的彩票编号(输入0退出)")) != 0) {
@@ -164,7 +177,7 @@ public class IOHelper {
 		return -1;
 	}
 
-	public static void showLotteryWinner() {
+	public void showLotteryWinner() {
 		int jackpot = LotterySpot.getJackpot();
 		showInfo("中奖号码是" + (jackpot + 1));
 		if (LotterySpot.getLotteryOwner(jackpot) != null) {
@@ -179,9 +192,15 @@ public class IOHelper {
 		}
 	}
 
-	public static int getStoreCardIndex(Player p) {
+	public int getStoreCardIndex(Player p) {
 		showInfo("您拥有" + p.getTickets() + "点券。");
 		return InputInt("请输入您要购买的卡片编号: ") - 1;
+	}
+
+	@Override
+	public Player chosePlayer(List<Player> playersNear) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

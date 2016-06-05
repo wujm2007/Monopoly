@@ -1,7 +1,5 @@
 package entity;
 
-import biz_cmdLine.IOHelper;
-
 public class Bank extends Building {
 	private static final String ICON = "银";
 	private static final String TYPE = "银行";
@@ -54,10 +52,11 @@ public class Bank extends Building {
 	}
 
 	private static void bankOperation(Player p) {
-		IOHelper.showBankAccountInfo(p);
+		IOHelper IO = p.getGame().io();
+		IO.showBankAccountInfo(p);
 
 		while (true) {
-			BankOperation bkop = IOHelper.getBankOperation(p);
+			BankOperation bkop = IO.getBankOperation(p);
 			int money;
 
 			switch (bkop.getOpType()) {
@@ -66,7 +65,7 @@ public class Bank extends Building {
 				if (p.costCash(money)) {
 					p.addDeposit(money);
 				} else {
-					IOHelper.alert("您的现金不足。");
+					IO.alert("您的现金不足。");
 				}
 				break;
 			case WITHDRAW:
@@ -74,14 +73,14 @@ public class Bank extends Building {
 				if (p.costDeposit(money)) {
 					p.addCash(money);
 				} else {
-					IOHelper.alert("您的存款不足。");
+					IO.alert("您的存款不足。");
 				}
 				break;
 			case QUIT:
 				return;
 			}
 
-			IOHelper.showBankAccountInfo(p);
+			IO.showBankAccountInfo(p);
 		}
 	}
 

@@ -1,7 +1,5 @@
 package entity;
 
-import biz_cmdLine.IOHelper;
-
 public class CardSpot extends Building {
 	private static final String ICON = "卡";
 	private static final String TYPE = "银行";
@@ -27,29 +25,29 @@ public class CardSpot extends Building {
 		Card newCard = null;
 		switch (rand) {
 		case 0:
-			newCard = new ControlDice();
+			newCard = ControlDice.getInstance();
 			break;
 		case 1:
-			newCard = new RoadBlock();
+			newCard = RoadBlock.getInstance();
 			break;
 		case 2:
-			newCard = new AverageCashCard();
+			newCard = AverageCashCard.getInstance();
 			break;
 		case 3:
-			newCard = new RedCard();
+			newCard = RedCard.getInstance();
 			break;
 		case 4:
-			newCard = new BlackCard();
+			newCard = BlackCard.getInstance();
 			break;
 		case 5:
-			newCard = new LotteryCard();
+			newCard = LotteryCard.getInstance();
 			break;
 		case 6:
-			newCard = new BuyEstateCard();
+			newCard = BuyEstateCard.getInstance();
 			break;
 		}
-		IOHelper.alert("恭喜您获得 " + newCard.getName() + " 。");
-		p.getCards().add(newCard);
+		p.getGame().io().alert("恭喜您获得 " + newCard.getName() + " 。");
+		p.addCard(newCard);
 		return;
 	}
 

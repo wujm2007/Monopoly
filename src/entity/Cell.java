@@ -2,8 +2,6 @@ package entity;
 
 import java.util.ArrayList;
 
-import biz_cmdLine.IOHelper;
-
 public class Cell {
 	private Map map;
 	private int position;
@@ -27,10 +25,24 @@ public class Cell {
 
 	public void addPlayer(Player player) {
 		this.players.add(player);
+		if (map instanceof MapGUI) {
+			((MapGUI) map).addPlayer(player, getPosition());
+		}
 	}
 
 	public Player getLastPlayer() {
+		if (players.size() == 0)
+			return null;
 		return this.players.get(players.size() - 1);
+	}
+
+	public Player getAnotherPlayer(Player player) {
+		Player result = null;
+		for (Player p : players) {
+			if (p != player)
+				result = p;
+		}
+		return result;
 	}
 
 	public boolean hasPlayer(Player p) {
@@ -38,6 +50,9 @@ public class Cell {
 	}
 
 	public void removePlayer(Player p) {
+		if (map instanceof MapGUI) {
+			((MapGUI) map).removePlayer(p, getPosition());
+		}
 		this.players.remove(p);
 	}
 
@@ -53,14 +68,10 @@ public class Cell {
 			return this.getLastPlayer().getIcon();
 	}
 
-	public Cell getNextCell() {
-		int nPosition = (this.getPosition() + 1) % map.getLength();
+	public Cell getNextCell(boolean isClockwise) {
+		int nPosition = isClockwise ? (this.getPosition() + 1) % map.getLength()
+				: (this.getPosition() + (map.getLength() - 1)) % map.getLength();
 		return map.getCell(nPosition);
-	}
-
-	public Cell getPreviousCell() {
-		int pPosition = (this.getPosition() + (map.getLength() - 1)) % map.getLength();
-		return map.getCell(pPosition);
 	}
 
 	public boolean isBlocked() {
@@ -69,16 +80,16 @@ public class Cell {
 
 	public void setBlocked() {
 		this.blocked = true;
+		if (map instanceof MapGUI) {
+			((MapGUI) map).addRoadBlock(getPosition());
+		}
 	}
 
 	public Cell getCellByRelativePos(int n) {
 		boolean positive = n > 0;
 		Cell rtn = this;
 		for (int i = 0; i < Math.abs(n); i++) {
-			if (positive)
-				rtn = rtn.getNextCell();
-			else
-				rtn = rtn.getPreviousCell();
+			rtn = rtn.getNextCell(positive);
 		}
 		return rtn;
 	}
@@ -93,7 +104,7 @@ public class Cell {
 	}
 
 	public void printInfo() {
-		IOHelper.showInfo(getBuilding().getDescription());
+		map.getGame().io().showInfo(getBuilding().getDescription());
 	}
 
 }

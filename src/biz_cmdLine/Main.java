@@ -1,28 +1,30 @@
 package biz_cmdLine;
 
 import java.util.ArrayList;
-import java.util.List;
-import debug.Debug;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import entity.*;
 
 public class Main {
 	private static Game g;
+	private static IOHelper IO = IOHelper_cmdLine.getInstance();
 
 	public static void main(String args[]) {
-		g = new Game(2);
+		g = new Game(2, false, IO);
 
 		// Debug.debug(g);
 
-		IOHelper.showInfo("========================\t游   戏   开   始\t========================");
+		IO.showInfo("========================\t游   戏   开   始\t========================");
 		while (true) {
 			g.addDay();
 			Date date = g.getDate();
-			IOHelper.showInfo("今天是" + date.getYear() + "年" + date.getMonth() + "月" + date.getDay() + "日。");
+			IO.showInfo("今天是" + date.getYear() + "年" + date.getMonth() + "月" + date.getDay() + "日。");
 			g.getPlayers(false).forEach(p -> {
-				IOHelper.showInfo("现在是玩家" + p.getName() + "的操作时间，您的前进方向是" + (p.isClockWise() ? "顺时针" : "逆时针"));
+				IO.showInfo("现在是玩家" + p.getName() + "的操作时间，您的前进方向是" + (p.isClockwise() ? "顺时针" : "逆时针"));
 				printMenu(p);
 				if (g.getPlayers(false).stream().count() <= 1) {
-					IOHelper.alert("游戏结束!");
+					IO.alert("游戏结束!");
 					System.exit(0);
 				}
 			});
@@ -30,19 +32,19 @@ public class Main {
 	}
 
 	public static void printMenu(Player p) {
-		IOHelper.showInfo("你现在可以执行如下操作");
-		IOHelper.showInfo("0 - 查看地图");
-		IOHelper.showInfo("1 - 查看原始地图");
-		IOHelper.showInfo("2 - 使用道具");
-		IOHelper.showInfo("3 - 前方10步内示警");
-		IOHelper.showInfo("4 - 查看前后指定步数的具体信息");
-		IOHelper.showInfo("5 - 查看玩家的资产信息");
-		IOHelper.showInfo("6 - 掷骰子");
-		IOHelper.showInfo("7 - 不玩了！认输！");
-		IOHelper.showInfo("8 - 进入股市");
+		IO.showInfo("你现在可以执行如下操作");
+		IO.showInfo("0 - 查看地图");
+		IO.showInfo("1 - 查看原始地图");
+		IO.showInfo("2 - 使用道具");
+		IO.showInfo("3 - 前方10步内示警");
+		IO.showInfo("4 - 查看前后指定步数的具体信息");
+		IO.showInfo("5 - 查看玩家的资产信息");
+		IO.showInfo("6 - 掷骰子");
+		IO.showInfo("7 - 不玩了！认输！");
+		IO.showInfo("8 - 进入股市");
 		int command;
-		while (((command = IOHelper.InputInt("请输入")) < 0) || (command > 8)) {
-			IOHelper.alert("请输入正确的操作代码。");
+		while (((command = IO.InputInt("请输入")) < 0) || (command > 8)) {
+			IO.alert("请输入正确的操作代码。");
 		}
 		switch (command) {
 		case 0:
@@ -114,46 +116,55 @@ public class Main {
 
 	// print ustItem menu
 	private static void useItem(Player p) {
-		List<Card> cards = p.getCards();
+		HashMap<Card, Integer> cards = p.getCards();
 		if (cards.size() == 0) {
-			IOHelper.showInfo("您没有卡片。");
+			IO.showInfo("您没有卡片。");
 			return;
 		}
-		cards.forEach(c -> {
-			IOHelper.showInfo((cards.indexOf(c) + 1) + ":" + c.getName() + "  \t" + c.getDescription());
+
+		int i = 0;
+		HashMap<Integer, Card> selectionMap = new HashMap<Integer, Card>();
+		for (Entry<Card, Integer> entry : cards.entrySet()) {
+			i++;
+			selectionMap.put(i, entry.getKey());
+			System.out.println(i + ": " + entry.getKey().getName() + " x" + entry.getValue());
+		}
+
+		selectionMap.forEach((a, b) -> {
+			System.out.println(a + ": " + b.getName());
 		});
 
 		int index;
-		if (((index = IOHelper.InputInt("请输入您要使用的卡片编号(输入0退出)") - 1) >= 0) && (index < cards.size())) {
-			if (cards.get(index).act(p) == 0)
-				cards.remove(index);
+		if (((index = IO.InputInt("请输入您要使用的卡片编号(输入0退出)")) > 0) && (index <= i)) {
+			if (selectionMap.get(index).act(p) == 0)
+				p.removeCard(selectionMap.get(index));
 			else
-				IOHelper.alert("使用失败。");
-		} else if (index == -1)
+				IO.alert("使用失败。");
+		} else if (index == 0)
 			return;
 		else {
-			IOHelper.alert("编号错误。");
+			IO.alert("编号错误。");
 			useItem(p);
 		}
 	}
 
 	// print asset of players
 	private static void showAsset() {
-		IOHelper.showInfo("玩家资产信息如下:\n玩家名\t点券\t现金\t存款\t房产\t资产总额\t");
+		IO.showInfo("玩家资产信息如下:\n玩家名\t点券\t现金\t存款\t房产\t资产总额\t");
 		g.getPlayers(true).forEach(p -> {
 			if (p.isBroke())
-				IOHelper.showInfo(String.format("%s\t已破产", p.getName()));
+				IO.showInfo(String.format("%s\t已破产", p.getName()));
 			else
-				IOHelper.showInfo(String.format("%s\t%d\t%d\t%d\t%d\t%d\t", p.getName(), p.getTickets(), p.getCash(),
+				IO.showInfo(String.format("%s\t%d\t%d\t%d\t%d\t%d\t", p.getName(), p.getTickets(), p.getCash(),
 						p.getDeposit(), p.getEstates().size(), p.getAsset()));
 		});
 	}
 
 	// print the information of a cell in certain steps
 	private static void showMsgInCertainSteps(Player p) {
-		int relativePos = IOHelper.InputInt("请输入要查询的地点与您的相对步数");
+		int relativePos = IO.InputInt("请输入要查询的地点与您的相对步数");
 		Cell c = g.getMap().getCell(p.getPosition());
-		IOHelper.showInfo(c.getCellByRelativePos(relativePos).getBuilding().getDescription());
+		IO.showInfo(c.getCellByRelativePos(relativePos).getBuilding().getDescription());
 	}
 
 	// print warnings in 10 steps
@@ -162,12 +173,12 @@ public class Main {
 		boolean noBlock = true;
 		for (int i = 0; i < 11; i++) {
 			if (c.getCellByRelativePos(i).isBlocked()) {
-				IOHelper.showInfo("前方" + i + "步处有路障。");
+				IO.showInfo("前方" + i + "步处有路障。");
 				noBlock = false;
 			}
 		}
 		if (noBlock)
-			IOHelper.showInfo("前方10步之内没有路障。");
+			IO.showInfo("前方10步之内没有路障。");
 	}
 
 }

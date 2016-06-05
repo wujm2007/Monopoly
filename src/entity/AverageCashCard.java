@@ -1,6 +1,19 @@
 package entity;
 
 public class AverageCashCard extends Card {
+
+	private static AverageCashCard instance;
+
+	private AverageCashCard() {
+	};
+
+	public static AverageCashCard getInstance() {
+		if (instance == null) {
+			return (instance = new AverageCashCard());
+		}
+		return instance;
+	}
+
 	private static final String NAME = "均富卡";
 	private static final String DESCRIPTION = "将所有人的现金平均分配";
 

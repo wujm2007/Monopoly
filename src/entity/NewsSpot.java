@@ -2,8 +2,6 @@ package entity;
 
 import java.util.Collection;
 
-import biz_cmdLine.IOHelper;
-
 public class NewsSpot extends Building {
 	private static final String ICON = "新";
 	private static final String TYPE = "新闻点";
@@ -29,6 +27,7 @@ public class NewsSpot extends Building {
 	}
 
 	private void newsEvent(Player p) {
+		IOHelper IO = p.getGame().io();
 
 		Collection<Player> players = p.getPeers(false);
 
@@ -42,7 +41,7 @@ public class NewsSpot extends Building {
 					landlord = player;
 			}
 			landlord.addCash(randMoney);
-			IOHelper.alert("公开表扬第一地主 " + landlord.getName() + " 奖励 " + randMoney + " 元。");
+			IO.alert("公开表扬第一地主 " + landlord.getName() + " 奖励 " + randMoney + " 元。");
 			break;
 		case 1:
 			Player poorMan = p;
@@ -51,51 +50,51 @@ public class NewsSpot extends Building {
 					poorMan = player;
 			}
 			poorMan.addCash(randMoney);
-			IOHelper.alert("公开补助土地最少者 " + poorMan.getName() + " " + randMoney + " 元。");
+			IO.alert("公开补助土地最少者 " + poorMan.getName() + " " + randMoney + " 元。");
 			break;
 		case 2:
 			players.forEach(player -> {
 				player.setDeposit((int) (player.getDeposit() * 1.1));
 			});
-			IOHelper.alert("银行加发储金红利，每个人得到存款10%。");
+			IO.alert("银行加发储金红利，每个人得到存款10%。");
 			break;
 		case 3:
 			players.forEach(player -> {
 				player.setDeposit((int) (player.getDeposit() * 0.9));
 			});
-			IOHelper.alert("所有人缴纳财产税10%。");
+			IO.alert("所有人缴纳财产税10%。");
 			break;
 		case 4:
-			IOHelper.alert("每个人得到一张卡片。");
+			IO.alert("每个人得到一张卡片。");
 
 			p.getPeers(false).forEach(player -> {
 				int randCard = (int) (Math.random() * 7);
 				Card newCard = null;
 				switch (randCard) {
 				case 0:
-					newCard = new ControlDice();
+					newCard = ControlDice.getInstance();
 					break;
 				case 1:
-					newCard = new RoadBlock();
+					newCard = RoadBlock.getInstance();
 					break;
 				case 2:
-					newCard = new AverageCashCard();
+					newCard = AverageCashCard.getInstance();
 					break;
 				case 3:
-					newCard = new RedCard();
+					newCard = RedCard.getInstance();
 					break;
 				case 4:
-					newCard = new BlackCard();
+					newCard = BlackCard.getInstance();
 					break;
 				case 5:
-					newCard = new LotteryCard();
+					newCard = LotteryCard.getInstance();
 					break;
 				case 6:
-					newCard = new BuyEstateCard();
+					newCard = BuyEstateCard.getInstance();
 					break;
 				}
-				IOHelper.alert(player.getName() + "获得 " + newCard.getName() + " 。");
-				player.getCards().add(newCard);
+				IO.alert(player.getName() + "获得 " + newCard.getName() + " 。");
+				player.addCard(newCard);
 			});
 
 			break;
