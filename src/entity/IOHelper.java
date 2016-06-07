@@ -7,7 +7,7 @@ import java.util.Map;
 import entity.Player;
 import entity.StockMarket.Stock;
 import entity.StockMarket.StockTradeOperation;
-import entity.Bank.BankOperation;
+import entity.buildings.Bank.BankOperation;
 
 @SuppressWarnings("serial")
 public abstract class IOHelper implements Serializable {

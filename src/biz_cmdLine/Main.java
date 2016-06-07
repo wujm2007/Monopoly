@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import entity.*;
+import entity.cards.Card;
 
 public class Main {
 	private static Game g;
@@ -129,11 +130,7 @@ public class Main {
 			selectionMap.put(i, entry.getKey());
 			System.out.println(i + ": " + entry.getKey().getName() + " x" + entry.getValue());
 		}
-
-		selectionMap.forEach((a, b) -> {
-			System.out.println(a + ": " + b.getName());
-		});
-
+		
 		int index;
 		if (((index = IO.InputInt("请输入您要使用的卡片编号(输入0退出)")) > 0) && (index <= i)) {
 			if (selectionMap.get(index).act(p) == 0)

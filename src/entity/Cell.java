@@ -3,7 +3,8 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import view.RoadPanel;
+import entity.buildings.Building;
+import views.RoadPanel;
 
 @SuppressWarnings("serial")
 public class Cell implements Serializable {

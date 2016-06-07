@@ -2,6 +2,9 @@ package entity;
 
 import java.io.Serializable;
 
+import entity.buildings.Bank;
+import entity.buildings.LotterySpot;
+
 @SuppressWarnings("serial")
 public class Date implements Serializable {
 	private int year = 2016, month = 1, day = 0, dayOfWeek = 4;
@@ -54,5 +57,9 @@ public class Date implements Serializable {
 			month = 1;
 		}
 		this.game.updateInfo();
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 }

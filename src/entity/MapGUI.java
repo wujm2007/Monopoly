@@ -7,15 +7,23 @@ import java.io.InputStreamReader;
 
 import javax.swing.JPanel;
 
-import view.BankPanel;
-import view.CardSpotPanel;
-import view.CellPanel;
-import view.DicePanel;
-import view.EstatePanel;
-import view.NewsSpotPanel;
-import view.RoadPanel;
-import view.StorePanel;
-import view.TicketSpotPanel;
+import entity.buildings.Bank;
+import entity.buildings.CardSpot;
+import entity.buildings.EmptySpot;
+import entity.buildings.Estate;
+import entity.buildings.LotterySpot;
+import entity.buildings.NewsSpot;
+import entity.buildings.Store;
+import entity.buildings.TicketSpot;
+import views.BankPanel;
+import views.CardSpotPanel;
+import views.CellPanel;
+import views.DicePanel;
+import views.EstatePanel;
+import views.NewsSpotPanel;
+import views.RoadPanel;
+import views.StorePanel;
+import views.TicketSpotPanel;
 
 @SuppressWarnings("serial")
 public class MapGUI extends Map {
@@ -42,7 +50,7 @@ public class MapGUI extends Map {
 	private static int mapl[][] = { { 1, 3 }, { 1, 2 }, { 3, 1 }, { 4, 1 }, { 5, 1 }, { 6, 1 }, { 9, 1 }, { 10, 1 },
 			{ 10, 4 }, { 11, 4 }, { 12, 4 }, { 13, 3 }, { 16, 3 }, { 18, 4 }, { 18, 5 }, { 18, 6 }, { 18, 7 },
 			{ 16, 8 }, { 15, 9 }, { 14, 9 }, { 14, 6 }, { 13, 6 }, { 12, 6 }, { 9, 6 }, { 11, 9 }, { 10, 11 },
-			{ 9, 11 }, { 8, 11 }, { 7, 11 }, { 4, 9 }, { 3, 10 }, { 2, 10 }, { 1, 8 }, { 1, 7 }, { 1, 6 }, { 1, 5 } };
+			{ 9, 11 }, { 8, 11 }, { 7, 11 }, { 4, 9 }, { 3, 9 }, { 2, 9 }, { 2, 8 }, { 2, 7 }, { 2, 6 }, { 2, 5 } };
 
 	private static int roadl[][] = { { 2, 3 }, { 2, 2 }, { 3, 2 }, { 4, 2 }, { 5, 2 }, { 7, 2 }, { 9, 2 }, { 10, 2 },
 			{ 10, 3 }, { 11, 3 }, { 12, 3 }, { 14, 3 }, { 16, 4 }, { 17, 4 }, { 17, 5 }, { 17, 6 }, { 17, 7 },
@@ -94,7 +102,6 @@ public class MapGUI extends Map {
 				for (int i = 0; i < num; i++) {
 					Estate e = new Estate(c.substring(1), i + 1, 1.0);
 					addCell(new Cell(this, count, e));
-					// e.setPanel((EstatePanel) cellPanels[count]);
 					count++;
 				}
 				break;
@@ -115,6 +122,11 @@ public class MapGUI extends Map {
 			mapPanel.add(roadPanels[i]);
 		}
 		mapPanel.add(dicePanel);
+	}
+
+	public void reinit(JPanel mapPanel) {
+		for (int i = 0; i < cellPanels.length; i++)
+			roadPanels[i].setCell(this.getCell(i));
 	}
 
 	public void addPlayer(Player p) {

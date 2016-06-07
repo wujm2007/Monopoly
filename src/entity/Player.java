@@ -11,6 +11,13 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
+import entity.buildings.Estate;
+import entity.cards.Card;
+import entity.cards.ControlDice;
+import entity.cards.RoadBlock;
+import entity.cards.TaxCard;
+import entity.cards.TurnaroundCard;
+
 @SuppressWarnings("serial")
 public class Player implements Serializable {
 	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
@@ -80,7 +87,7 @@ public class Player implements Serializable {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				nextStep(--stepsLeft, true);
+				nextStep(--stepsLeft, isClockwise);
 			}
 		});
 		timer.start();
@@ -94,19 +101,17 @@ public class Player implements Serializable {
 		for (int i = steps; i != 0;) {
 			nextStep(--i, isClockwise);
 		}
-		steps = 0;
 	}
 
 	public void nextStep(int stepsLeft, boolean isClockWise) {
 		if (steps == 0) {
-			if (timer != null)
-				timer.stop();
+			stop();
 			return;
 		}
 		Cell cell = map.getCell(getPosition());
 		if (cell.isBlocked()) {
 			cell.stay(this);
-			steps = 0;
+			stop();
 			return;
 		}
 		cell.removePlayer(this);
@@ -115,9 +120,18 @@ public class Player implements Serializable {
 			cell.getNextCell(isClockwise).passby(this);
 		else {
 			cell.getNextCell(isClockwise).stay(this);
-			steps = 0;
-			if (timer != null)
-				timer.stop();
+			stop();
+		}
+	}
+
+	private void stop() {
+		steps = 0;
+		if (timer != null)
+			timer.stop();
+		if (this.getGame().getGameFrame() != null) {
+			this.getGame().getGameFrame().setCurrentPlayer(this.getNextPlayer());
+			if (this.getGame().getPlayers(false).indexOf(this) == this.getGame().getPlayers(false).size() - 1)
+				this.getGame().getDate().addDay();
 		}
 	}
 

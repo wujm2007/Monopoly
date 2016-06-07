@@ -15,7 +15,15 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
-import view.GameFrame;
+import entity.buildings.Bank;
+import entity.buildings.CardSpot;
+import entity.buildings.EmptySpot;
+import entity.buildings.Estate;
+import entity.buildings.LotterySpot;
+import entity.buildings.NewsSpot;
+import entity.buildings.Store;
+import entity.buildings.TicketSpot;
+import views.GameFrame;
 
 @SuppressWarnings("serial")
 public class Game implements Serializable {
@@ -33,6 +41,10 @@ public class Game implements Serializable {
 
 	public void setGameFrame(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
+	}
+
+	public GameFrame getGameFrame() {
+		return this.gameFrame;
 	}
 
 	public Date getDate() {
@@ -178,16 +190,16 @@ public class Game implements Serializable {
 		File f = fd.getSelectedFile();
 		if (f != null) {
 			try {
-				FileInputStream istream = new FileInputStream(f);
-				ObjectInputStream pr = new ObjectInputStream(istream);
-				this.players = (List<Player>) pr.readObject();
-				this.stockMarket = (StockMarket) pr.readObject();
-				this.map = (Map) pr.readObject();
+				ObjectInputStream is = new ObjectInputStream(new FileInputStream(f));
+				this.players = (List<Player>) is.readObject();
+				this.stockMarket = (StockMarket) is.readObject();
+				this.map = (Map) is.readObject();
 				this.map.setGame(this);
-				this.date = (Date) pr.readObject();
-				this.gameFrame.setCurrentPlayer((Player) pr.readObject());
+				this.date = (Date) is.readObject();
+				this.date.setGame(this);
+				this.gameFrame.setCurrentPlayer((Player) is.readObject());
 				this.gameFrame.init();
-				istream.close();
+				is.close();
 				this.io().alert("读取成功");
 			} catch (Exception e) {
 				e.printStackTrace();

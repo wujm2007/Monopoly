@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import entity.LotterySpot;
 import entity.Player;
 import entity.StockMarket.Stock;
 import entity.StockMarket.StockTradeOpType;
 import entity.StockMarket.StockTradeOperation;
-import entity.Bank.BankOpType;
-import entity.Bank.BankOperation;
+import entity.buildings.LotterySpot;
+import entity.buildings.Bank.BankOpType;
+import entity.buildings.Bank.BankOperation;
 import entity.IOHelper;
 
 @SuppressWarnings("serial")

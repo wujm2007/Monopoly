@@ -2,7 +2,7 @@ package biz_GUI;
 
 import java.awt.EventQueue;
 import entity.Game;
-import view.GameFrame;
+import views.GameFrame;
 
 public class Main {
 
