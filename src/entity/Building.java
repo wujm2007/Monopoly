@@ -1,13 +1,14 @@
 package entity;
 
-public abstract class Building {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public abstract class Building implements Serializable {
 
 	public abstract String getIcon();
 
-	// the action should be taken when a player passes by
 	protected abstract void passby(Player p);
 
-	// the action should be taken when a player stays
 	protected abstract void stay(Player p);
 
 	public Player getOwner() {

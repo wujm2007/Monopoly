@@ -2,6 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("serial")
 public class Store extends Building {
 	private static final String icon = "道";
 	private static final String type = "道具店";

@@ -10,12 +10,14 @@ import javax.swing.JPanel;
 import view.BankPanel;
 import view.CardSpotPanel;
 import view.CellPanel;
+import view.DicePanel;
 import view.EstatePanel;
 import view.NewsSpotPanel;
 import view.RoadPanel;
 import view.StorePanel;
 import view.TicketSpotPanel;
 
+@SuppressWarnings("serial")
 public class MapGUI extends Map {
 
 	private static final String STR_MAP = "5水星街,1,5金星街,3,5火星街,2,5木星街,1,5土星街,5,7,7,7,7,7,7";
@@ -92,7 +94,7 @@ public class MapGUI extends Map {
 				for (int i = 0; i < num; i++) {
 					Estate e = new Estate(c.substring(1), i + 1, 1.0);
 					addCell(new Cell(this, count, e));
-					e.setPanel((EstatePanel) cellPanels[count]);
+					// e.setPanel((EstatePanel) cellPanels[count]);
 					count++;
 				}
 				break;
@@ -100,17 +102,23 @@ public class MapGUI extends Map {
 		}
 	}
 
-	public void init(JPanel mapPanel) {
+	public void init(JPanel mapPanel, DicePanel dicePanel) {
+		mapPanel.removeAll();
+		mapPanel.repaint();
 		for (int i = 0; i < cellPanels.length; i++) {
+			roadPanels[i].setCellPanel(cellPanels[i]);
+			roadPanels[i].setCell(this.getCell(i));
+
 			cellPanels[i].setLocation(mapl[i][0], mapl[i][1]);
-			roadPanels[i].setLocation(roadl[i][0], roadl[i][1], 0);
+			roadPanels[i].setLocation(roadl[i][0], roadl[i][1]);
 			mapPanel.add(cellPanels[i]);
 			mapPanel.add(roadPanels[i]);
 		}
+		mapPanel.add(dicePanel);
 	}
 
-	public void addPlayer(Player p, int pos) {
-		roadPanels[pos].setPlayerAvatar(p);
+	public void addPlayer(Player p) {
+		roadPanels[p.getPosition()].setPlayerAvatar(p);
 	}
 
 	public void addRoadBlock(int pos) {
@@ -119,11 +127,12 @@ public class MapGUI extends Map {
 
 	public void removeRoadBlock(int pos) {
 		roadPanels[pos].clear();
+		if (getCells().get(pos).getLastPlayer() != null)
+			roadPanels[pos].setPlayerAvatar(getCells().get(pos).getLastPlayer());
 	}
 
 	public void removePlayer(Player p, int pos) {
 		roadPanels[pos].clear();
-		cellPanels[pos].repaint();
 		if (getCells().get(pos).getAnotherPlayer(p) != null)
 			roadPanels[pos].setPlayerAvatar(getCells().get(pos).getAnotherPlayer(p));
 	}

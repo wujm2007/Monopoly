@@ -1,6 +1,9 @@
 package entity;
 
-public class Date {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Date implements Serializable {
 	private int year = 2016, month = 1, day = 0, dayOfWeek = 4;
 	private int dayOfMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 	private static String dayName[] = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };

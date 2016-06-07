@@ -1,8 +1,12 @@
 package entity;
 
+@SuppressWarnings("serial")
 public class AverageCashCard extends Card {
 
 	private static AverageCashCard instance;
+
+	private static final String NAME = "均富卡";
+	private static final String DESCRIPTION = "将所有人的现金平均分配";
 
 	private AverageCashCard() {
 	};
@@ -13,9 +17,6 @@ public class AverageCashCard extends Card {
 		}
 		return instance;
 	}
-
-	private static final String NAME = "均富卡";
-	private static final String DESCRIPTION = "将所有人的现金平均分配";
 
 	@Override
 	public int act(Player player) {

@@ -9,8 +9,8 @@ import javax.swing.ImageIcon;
 public class TicketSpotPanel extends CellPanel {
 	private static final int HEIGHT = 1;
 	private static final int WIDTH = 1;
-	private ImageIcon imageIcon = new ImageIcon("./image/ticket.png");
-	private Image image = imageIcon.getImage();
+	private transient ImageIcon imageIcon = new ImageIcon("./image/ticket.png");
+	private transient Image image = imageIcon.getImage();
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

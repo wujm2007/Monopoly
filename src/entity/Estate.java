@@ -2,6 +2,7 @@ package entity;
 
 import view.EstatePanel;
 
+@SuppressWarnings("serial")
 public class Estate extends Building {
 	private static final String ICON = "◎";
 	private static final String TYPE = "房产";
@@ -11,7 +12,7 @@ public class Estate extends Building {
 	private int price;
 	private int number;
 	private String street;
-	private EstatePanel panel;
+	private transient EstatePanel panel;
 
 	@Override
 	public String getOriginalIcon() {

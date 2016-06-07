@@ -13,6 +13,7 @@ import entity.Bank.BankOpType;
 import entity.Bank.BankOperation;
 import entity.IOHelper;
 
+@SuppressWarnings("serial")
 public class IOHelper_cmdLine extends IOHelper {
 	private static IOHelper instance;
 

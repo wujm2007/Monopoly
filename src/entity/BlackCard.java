@@ -1,8 +1,12 @@
 package entity;
 
+@SuppressWarnings("serial")
 public class BlackCard extends Card {
-	
+
 	private static BlackCard instance;
+
+	private static final String NAME = "黑卡";
+	private static final String DESCRIPTION = "使第二天这支股票下跌10%";
 
 	private BlackCard() {
 	};
@@ -13,9 +17,6 @@ public class BlackCard extends Card {
 		}
 		return instance;
 	}
-	
-	private static final String NAME = "黑卡";
-	private static final String DESCRIPTION = "使第二天这支股票下跌10%";
 
 	@Override
 	public int act(Player p) {

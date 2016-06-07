@@ -9,8 +9,8 @@ import javax.swing.ImageIcon;
 public class StorePanel extends CellPanel {
 	private static final int HEIGHT = 3;
 	private static final int WIDTH = 3;
-	private ImageIcon imageIcon = new ImageIcon("./image/shop.jpg");
-	private Image image = imageIcon.getImage();
+	private transient ImageIcon imageIcon = new ImageIcon("./image/shop.jpg");
+	private transient Image image = imageIcon.getImage();
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

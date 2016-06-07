@@ -1,23 +1,45 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
-import javax.swing.border.*;
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import entity.Cell;
-import entity.Date;
 import entity.Game;
-import entity.Map;
 import entity.MapGUI;
 import entity.Player;
 
-import java.awt.event.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.border.TitledBorder;
 
 public class GameFrame {
 	private Game game;
-	private Date date;
-	private Map map;
 	private Player currentPlayer;
+	private JFrame frame;
+	private JLabel lblDate, lblDay, lblPlayerName, lblPlayerCash, lblPlayerDeposit, lblPlayerPoint, lblPlayerMoney,
+			lblPlayerProperty, lblFooter;
+	private ImagePanel playerAvatar;
+	private DicePanel dicePanel;
+	private JMenu mnItem;
+	private JPanel mapPanel;
+	private List<String> bgmList = Arrays.asList("asuka", "rei");
 
 	public Player getCurrentPlayer() {
 		return currentPlayer;
@@ -28,36 +50,35 @@ public class GameFrame {
 		this.refresh();
 	}
 
-	public JFrame frame;
-	private JLabel lblDate, lblDay, lblPlayerName, lblPlayerCash, lblPlayerDeposit, lblPlayerPoint, lblPlayerMoney,
-			lblPlayerProperty, lblFooter;
-	private ImagePanel playerAvatar = new ImagePanel();
-	private DicePanel dicePanel;
-	private JPanel panel_e_1;
-	private JMenu mnItem;
-
 	public GameFrame(Game g) {
 		this.game = g;
-		this.date = g.getDate();
-		this.map = g.getMap();
+		this.playerAvatar = new ImagePanel();
 		initialize();
-
 		this.setCurrentPlayer(game.getPlayers(false).iterator().next());
 	}
 
 	public void refresh() {
 		updatePlayerInfo();
-		updateCardInfo();
+		updateCardMenu();
 		updateWaring();
 		updateDateInfo();
 	}
 
-	private void updateDateInfo() {
-		lblDate.setText(String.format("%d/%d/%d", date.getYear(), date.getMonth(), date.getDay()));
-		lblDay.setText(date.getDayOfWeek());
+	public void init() {
+		updatePlayerInfo();
+		updateCardMenu();
+		updateWaring();
+		updateDateInfo();
+		((MapGUI) game.getMap()).init(mapPanel, dicePanel);
 	}
 
-	private void updateCardInfo() {
+	private void updateDateInfo() {
+		lblDate.setText(String.format("%d/%d/%d", game.getDate().getYear(), game.getDate().getMonth(),
+				game.getDate().getDay()));
+		lblDay.setText(game.getDate().getDayOfWeek());
+	}
+
+	private void updateCardMenu() {
 		mnItem.removeAll();
 		this.getCurrentPlayer().getCards().forEach((card, num) -> {
 			JMenuItem cardMenuItem;
@@ -99,7 +120,7 @@ public class GameFrame {
 	}
 
 	private void initialize() {
-		date.addDay();
+		game.getDate().addDay();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 520);
 		frame.setResizable(false);
@@ -107,11 +128,11 @@ public class GameFrame {
 		frame.getContentPane().setLayout(null);
 
 		// 地图面板开始
-		JPanel panel_c = new JPanel();
-		panel_c.setBounds(0, 0, 650, 430);
-		frame.getContentPane().add(panel_c);
-		panel_c.setLayout(null);
-		((MapGUI) this.map).init(panel_c);
+		mapPanel = new JPanel();
+		mapPanel.setBounds(0, 0, 650, 430);
+		frame.getContentPane().add(mapPanel);
+		mapPanel.setLayout(null);
+
 		dicePanel = new DicePanel();
 		dicePanel.setBounds(145, 145, 90, 90);
 		dicePanel.addMouseListener(new MouseAdapter() {
@@ -119,7 +140,9 @@ public class GameFrame {
 				rollDice();
 			}
 		});
-		panel_c.add(dicePanel);
+
+		((MapGUI) game.getMap()).init(mapPanel, dicePanel);
+
 		// 地图面板结束
 
 		// 右边栏开始
@@ -132,10 +155,11 @@ public class GameFrame {
 
 		JPanel panel_e_0 = new JPanel(new GridLayout(2, 0, 0, 0));
 		panel_e_0.setBorder(new TitledBorder("游戏信息"));
-		String strTime = String.format("%d/%d/%d", date.getYear(), date.getMonth(), date.getDay());
+		String strTime = String.format("%d/%d/%d", game.getDate().getYear(), game.getDate().getMonth(),
+				game.getDate().getDay());
 		lblDate = new JLabel(strTime);
 		lblDate.setHorizontalAlignment(SwingConstants.CENTER);
-		String strDay = String.format("%s", date.getDayOfWeek());
+		String strDay = String.format("%s", game.getDate().getDayOfWeek());
 		lblDay = new JLabel(strDay);
 		lblDay.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_e_0.add(lblDate);
@@ -143,7 +167,7 @@ public class GameFrame {
 		// 游戏信息面板结束
 
 		// 玩家信息面板开始
-		panel_e_1 = new JPanel(new GridLayout(2, 0, 10, 10));
+		JPanel panel_e_1 = new JPanel(new GridLayout(2, 0, 10, 10));
 		panel_e_1.setBorder(new TitledBorder("玩家信息"));
 
 		JPanel panel_e_1_0 = new JPanel();
@@ -233,13 +257,13 @@ public class GameFrame {
 		JMenuItem mntmSave = new JMenuItem("保存游戏");
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// game.save();
+				game.save();
 			}
 		});
 		JMenuItem mntmLoad = new JMenuItem("读取游戏");
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// game.load();
+				game.load();
 			}
 		});
 		mnFile.add(mntmSave);
@@ -260,7 +284,7 @@ public class GameFrame {
 		mntmCheckToll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int relativePos = game.io().InputInt("请输入相对位置:");
-				Cell c = map.getCell(currentPlayer.getPosition());
+				Cell c = game.getMap().getCell(currentPlayer.getPosition());
 				game.io().showInfo(c.getCellByRelativePos(relativePos).getBuilding().getDescription());
 			}
 		});
@@ -285,6 +309,28 @@ public class GameFrame {
 		menuBar.add(mnStock);
 		// 股票子菜单结束
 
+		// 音乐子菜单开始
+		JMenu mnBGM = new JMenu("背景音乐");
+		mnItem.removeAll();
+		this.bgmList.forEach(m -> {
+			JMenuItem bgmMenuItem;
+			bgmMenuItem = new JMenuItem(m);
+			bgmMenuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						AudioClip audioClip;
+						audioClip = Applet.newAudioClip(new URL("file:///./music/" + m + ".mid"));
+						audioClip.play();
+					} catch (MalformedURLException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+			mnBGM.add(bgmMenuItem);
+		});
+		menuBar.add(mnBGM);
+		// 音乐子菜单结束
+
 		// 菜单结束
 	}
 
@@ -300,14 +346,13 @@ public class GameFrame {
 		currentPlayer.goWithTimer();
 		setCurrentPlayer(currentPlayer.getNextPlayer());
 		if (game.getPlayers(false).indexOf(currentPlayer) == 0)
-			date.addDay();
+			game.getDate().addDay();
 	}
 
 	private void rollDice() {
 		Timer DiceRollingTimer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int n = (int) (Math.random() * 6) + 1;
 				dicePanel.changeImage(n);
 			}

@@ -1,8 +1,12 @@
 package entity;
 
+@SuppressWarnings("serial")
 public class RoadBlock extends Card {
-	
+
 	private static RoadBlock instance;
+
+	private static final String NAME = "路障卡";
+	private static final String DESCRIPTION = "可以在前后8步之内安放一个路障,任意玩家经过路障时会停在路障所在位置不能前行";
 
 	private RoadBlock() {
 	};
@@ -13,9 +17,6 @@ public class RoadBlock extends Card {
 		}
 		return instance;
 	}
-	
-	private static final String NAME = "路障卡";
-	private static final String DESCRIPTION = "可以在前后8步之内安放一个路障,任意玩家经过路障时会停在路障所在位置不能前行";
 
 	@Override
 	public int act(Player p) {

@@ -3,6 +3,7 @@ package entity;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,12 +11,13 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
-public class Player {
+@SuppressWarnings("serial")
+public class Player implements Serializable {
 	private static final int ORIGINAL_CASH = 5000, ORIGINAL_TICKET = 100, ORIGINAL_DEPOSIT = 10000;
 
-	private Timer timer;
+	private transient Timer timer;
 
-	private class BankAccount {
+	private class BankAccount implements Serializable {
 		private int deposit;
 
 		public BankAccount() {
@@ -61,6 +63,7 @@ public class Player {
 		this.addCard(RoadBlock.getInstance());
 		this.addCard(ControlDice.getInstance());
 		this.addCard(TurnaroundCard.getInstance());
+		this.addCard(TaxCard.getInstance());
 	}
 
 	public void setSteps(int steps) {

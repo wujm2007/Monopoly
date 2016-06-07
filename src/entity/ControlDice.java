@@ -1,9 +1,12 @@
 package entity;
 
-
+@SuppressWarnings("serial")
 public class ControlDice extends Card {
-	
+
 	private static ControlDice instance;
+
+	private static final String NAME = "遥控骰子";
+	private static final String DESCRIPTION = "使用时可以任意控制骰子的结果(1-6)";
 
 	private ControlDice() {
 	};
@@ -14,9 +17,6 @@ public class ControlDice extends Card {
 		}
 		return instance;
 	}
-	
-	private static final String NAME = "遥控骰子";
-	private static final String DESCRIPTION = "使用时可以任意控制骰子的结果(1-6)";
 
 	@Override
 	public int act(Player p) {

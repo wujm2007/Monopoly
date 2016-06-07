@@ -1,5 +1,6 @@
 package entity;
 
+@SuppressWarnings("serial")
 public class Bank extends Building {
 	private static final String ICON = "银";
 	private static final String TYPE = "银行";

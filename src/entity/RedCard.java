@@ -1,5 +1,6 @@
 package entity;
 
+@SuppressWarnings("serial")
 public class RedCard extends Card {
 	
 	private static RedCard instance;

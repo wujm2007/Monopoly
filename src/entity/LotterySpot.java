@@ -2,6 +2,7 @@ package entity;
 
 import java.util.Arrays;
 
+@SuppressWarnings("serial")
 public class LotterySpot extends Building {
 	private static final String ICON = "彩";
 	private static final String TYPE = "彩票点";

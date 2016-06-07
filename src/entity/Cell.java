@@ -1,13 +1,27 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cell {
+import view.RoadPanel;
+
+@SuppressWarnings("serial")
+public class Cell implements Serializable {
 	private Map map;
 	private int position;
 	private Building building;
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private boolean blocked;
+	private RoadPanel roadPanel;
+
+	public RoadPanel getRoadPanel() {
+		return roadPanel;
+	}
+
+	public void setRoadPanel(RoadPanel roadPanel) {
+		this.roadPanel = roadPanel;
+		this.roadPanel.refresh();
+	}
 
 	public Cell(Map m, int p, Building b) {
 		this.map = m;
@@ -26,7 +40,7 @@ public class Cell {
 	public void addPlayer(Player player) {
 		this.players.add(player);
 		if (map instanceof MapGUI) {
-			((MapGUI) map).addPlayer(player, getPosition());
+			((MapGUI) map).addPlayer(player);
 		}
 	}
 
@@ -61,7 +75,6 @@ public class Cell {
 	public String getIcon(boolean original) {
 		if (original)
 			return this.getBuilding().getOriginalIcon();
-
 		if (this.players.isEmpty())
 			return this.getBuilding().getIcon();
 		else
@@ -85,26 +98,28 @@ public class Cell {
 		}
 	}
 
+	public void removeBlock() {
+		this.blocked = false;
+		if (map instanceof MapGUI) {
+			((MapGUI) map).removeRoadBlock(getPosition());
+		}
+	}
+
 	public Cell getCellByRelativePos(int n) {
 		boolean positive = n > 0;
 		Cell rtn = this;
-		for (int i = 0; i < Math.abs(n); i++) {
+		for (int i = 0; i < Math.abs(n); i++)
 			rtn = rtn.getNextCell(positive);
-		}
 		return rtn;
 	}
 
 	public void stay(Player player) {
 		getBuilding().stay(player);
-		this.blocked = false;
+		removeBlock();
 	}
 
 	public void passby(Player player) {
 		getBuilding().passby(player);
-	}
-
-	public void printInfo() {
-		map.getGame().io().showInfo(getBuilding().getDescription());
 	}
 
 }

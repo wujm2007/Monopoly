@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class ImagePanel extends JPanel {
-	private Image image;
+	private transient Image image;
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

@@ -2,6 +2,7 @@ package entity;
 
 import java.util.Collection;
 
+@SuppressWarnings("serial")
 public class NewsSpot extends Building {
 	private static final String ICON = "新";
 	private static final String TYPE = "新闻点";

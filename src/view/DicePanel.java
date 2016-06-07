@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class DicePanel extends JPanel {
-	private ImageIcon imageIcon = new ImageIcon("./image/dice6.png");
-	private Image image = imageIcon.getImage();
+	private transient ImageIcon imageIcon = new ImageIcon("./image/dice6.png");
+	private transient Image image = imageIcon.getImage();
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -20,7 +20,7 @@ public class DicePanel extends JPanel {
 	public void changeImage(int n) {
 		imageIcon = new ImageIcon("./image/dice" + n + ".png");
 		image = imageIcon.getImage();
-		repaint();
+		paintImmediately(0, 0, getWidth(), getHeight());
 	}
 
 }

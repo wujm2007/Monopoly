@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,8 @@ import entity.StockMarket.Stock;
 import entity.StockMarket.StockTradeOperation;
 import entity.Bank.BankOperation;
 
-public abstract class IOHelper {
+@SuppressWarnings("serial")
+public abstract class IOHelper implements Serializable {
 
 	// return true if the input is Y and false if the input is N
 	public abstract boolean InputYN(String msg);

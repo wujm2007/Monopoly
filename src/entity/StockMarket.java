@@ -1,13 +1,15 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StockMarket {
+@SuppressWarnings("serial")
+public class StockMarket implements Serializable {
 
-	public class Stock {
+	public class Stock implements Serializable {
 		private String name;
 		private double price;
 

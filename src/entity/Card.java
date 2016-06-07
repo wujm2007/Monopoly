@@ -1,6 +1,9 @@
 package entity;
 
-public abstract class Card {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public abstract class Card implements Serializable {
 
 	public abstract int act(Player p);
 

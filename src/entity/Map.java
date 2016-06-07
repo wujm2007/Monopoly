@@ -1,11 +1,14 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Map {
+@SuppressWarnings("serial")
+public class Map implements Serializable {
 
-	private Game game;
+	private transient Game game;
+
 	private List<Cell> cells;
 
 	public Map(Game game) {
@@ -15,6 +18,10 @@ public class Map {
 
 	public Game getGame() {
 		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 	public int getLength() {

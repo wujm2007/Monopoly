@@ -2,6 +2,7 @@ package biz_GUI;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -15,9 +16,10 @@ import entity.Bank.BankOpType;
 import entity.Bank.BankOperation;
 import entity.IOHelper;
 
+@SuppressWarnings("serial")
 public class IOHelper_GUI extends IOHelper {
 
-	Scanner sc;
+	private transient Scanner sc;
 
 	private static IOHelper instance;
 
@@ -48,18 +50,22 @@ public class IOHelper_GUI extends IOHelper {
 	}
 
 	public void showStocks(List<Stock> stocks) {
-		showInfo("股票行情：");
-		stocks.stream().forEach(s -> {
-			showInfo((stocks.indexOf(s) + 1) + ":\t" + s.getName() + "\t\t单价:\t" + String.format("%.2f", s.getPrice()));
-		});
+		String info = "股票行情：\n";
+		for (Stock s : stocks) {
+			info += (stocks.indexOf(s) + 1) + ":\t" + s.getName() + "\t\t单价:\t" + String.format("%.2f", s.getPrice())
+					+ "\n";
+		}
+		showInfo(info);
 	}
 
 	public void printStockAccount(Map<Stock, Integer> account) {
-		showInfo("您的股票账户：");
-		account.forEach((s, i) -> {
-			if (i > 0)
-				showInfo(s.getName() + ": " + i + "股, 价值：" + (int) (s.getPrice() * i) + "元。");
-		});
+		String info = "您的股票账户：\n";
+		for (Entry<Stock, Integer> e : account.entrySet()) {
+			if (e.getValue() > 0)
+				info += e.getKey().getName() + ": " + e.getValue() + "股, 价值："
+						+ (int) (e.getKey().getPrice() * e.getValue()) + "元。\n";
+		}
+		showInfo(info);
 	}
 
 	// get StockTradeOperation (see entity.StockMarket.StockTradeOperation)

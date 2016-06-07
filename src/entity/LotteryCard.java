@@ -1,8 +1,12 @@
 package entity;
 
+@SuppressWarnings("serial")
 public class LotteryCard extends Card {
-	
+
 	private static LotteryCard instance;
+
+	private static final String NAME = "彩票卡";
+	private static final String DESCRIPTION = "使用时可以操作本月的彩票开奖结果";
 
 	private LotteryCard() {
 	};
@@ -13,9 +17,6 @@ public class LotteryCard extends Card {
 		}
 		return instance;
 	}
-	
-	private static final String NAME = "彩票卡";
-	private static final String DESCRIPTION = "使用时可以操作本月的彩票开奖结果";
 
 	@Override
 	public int act(Player p) {

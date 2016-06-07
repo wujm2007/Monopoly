@@ -1,5 +1,6 @@
 package entity;
 
+@SuppressWarnings("serial")
 public class TicketSpot extends Building {
 	private static final String ICON = "券";
 	private static final String TYPE = "点券点";
