@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 @SuppressWarnings("serial")
 public class StockMarket implements Serializable {
@@ -61,10 +62,14 @@ public class StockMarket implements Serializable {
 	}
 
 	private List<Stock> stocks = new ArrayList<Stock>();
+
 	private Map<Player, HashMap<Stock, Integer>> acoounts = new HashMap<Player, HashMap<Stock, Integer>>();
 	private Map<Stock, Double> rand = new HashMap<Stock, Double>();
 
-	public StockMarket() {
+	private Game game;
+
+	public StockMarket(Game g) {
+		this.game = g;
 		// add 10 stocks and randomly generate their prices
 		stocks.add(new Stock("股票1", 10));
 		stocks.add(new Stock("股票2", 10));
@@ -78,6 +83,28 @@ public class StockMarket implements Serializable {
 		stocks.add(new Stock("股票0", 10));
 		for (int i = 0; i < 100; i++)
 			refresh();
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public List<Stock> getStocks() {
+		return stocks;
+	}
+
+	public Vector<String> generateStackTableRow(Stock s) {
+		Vector<String> result = new Vector<String>();
+		result.addElement(s.getName());
+		result.addElement(String.format("%.2f", s.getPrice()));
+		result.addElement(new Integer(0).toString());
+		game.getPlayers(true).forEach(p -> {
+			if (acoounts.get(p) != null)
+				result.add(new Integer(acoounts.get(p).get(s)).toString());
+			else
+				result.add(new Integer(0).toString());
+		});
+		return result;
 	}
 
 	public Stock getStock(int n) {

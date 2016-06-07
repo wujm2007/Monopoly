@@ -132,11 +132,7 @@ public class GameFrame {
 
 		dicePanel = new DicePanel();
 		dicePanel.setBounds(145, 145, 90, 90);
-		dicePanel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				rollDice();
-			}
-		});
+		setDiceListner();
 
 		((MapGUI) game.getMap()).init(mapPanel, dicePanel);
 
@@ -362,5 +358,14 @@ public class GameFrame {
 		});
 		DiceStoppingTimer.start();
 		DiceStoppingTimer.setRepeats(false);
+	}
+
+	public void setDiceListner() {
+		dicePanel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				rollDice();
+				dicePanel.removeMouseListener(this);
+			}
+		});
 	}
 }

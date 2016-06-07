@@ -132,7 +132,9 @@ public class Player implements Serializable {
 			this.getGame().getGameFrame().setCurrentPlayer(this.getNextPlayer());
 			if (this.getGame().getPlayers(false).indexOf(this) == this.getGame().getPlayers(false).size() - 1)
 				this.getGame().getDate().addDay();
+			this.getGame().getGameFrame().setDiceListner();
 		}
+		
 	}
 
 	public int getPosition() {
@@ -247,6 +249,8 @@ public class Player implements Serializable {
 		this.getGame().getStockMarket().writeoff(this);
 		this.isBroke = true;
 		this.getGame().io().alert(this.getName() + "破产。");
+		if (this.getPeers(false).isEmpty())
+			System.exit(0);
 	}
 
 	public boolean isBroke() {

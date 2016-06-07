@@ -72,7 +72,7 @@ public class Game implements Serializable {
 			this.initMap();
 			this.initPlayers();
 		}
-		this.stockMarket = new StockMarket();
+		this.stockMarket = new StockMarket(this);
 		this.date = new Date(this);
 		this.IO = IO;
 	}
@@ -193,6 +193,7 @@ public class Game implements Serializable {
 				ObjectInputStream is = new ObjectInputStream(new FileInputStream(f));
 				this.players = (List<Player>) is.readObject();
 				this.stockMarket = (StockMarket) is.readObject();
+				this.stockMarket.setGame(this);
 				this.map = (Map) is.readObject();
 				this.map.setGame(this);
 				this.date = (Date) is.readObject();
