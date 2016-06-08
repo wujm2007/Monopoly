@@ -234,7 +234,7 @@ public class GameFrame {
 
 		dicePanel = new DicePanel();
 		dicePanel.setBounds(145, 145, 90, 90);
-		setDiceListner();
+		setDiceListener();
 
 		((MapGUI) game.getMap()).init(mapPanel, dicePanel);
 	}
@@ -373,9 +373,8 @@ public class GameFrame {
 		DiceStoppingTimer.setRepeats(false);
 	}
 
-	public void setDiceListner() {
+	public void setDiceListener() {
 		if (dicePanel.getMouseListeners().length == 0) {
-			// System.out.println("setDiceListner");
 			dicePanel.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
 					dicePanel.removeMouseListener(this);
