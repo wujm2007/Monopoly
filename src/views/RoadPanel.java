@@ -51,7 +51,7 @@ public class RoadPanel extends JPanel {
 
 	public void refresh() {
 		paintImmediately(0, 0, this.getWidth(), this.getHeight());
-		if ((this.cellPanel != null) && ((this.cell.getLastPlayer() == null))
+		if ((this.cellPanel != null) && ((this.cell.getLastPlayer() == null) && (!this.cell.isBlocked()))
 				|| (this.cellPanel instanceof EstatePanel))
 			this.cellPanel.refresh();
 	}
@@ -61,6 +61,8 @@ public class RoadPanel extends JPanel {
 		if (this.cell.getBuilding() instanceof Estate)
 			((Estate) this.cell.getBuilding()).setPanel((EstatePanel) this.cellPanel);
 		this.setPlayerAvatar(this.cell.getLastPlayer());
+		if (cell.isBlocked())
+			this.setRoadBlock();
 		this.cell.setRoadPanel(this);
 	}
 

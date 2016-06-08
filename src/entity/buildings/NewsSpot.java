@@ -43,7 +43,7 @@ public class NewsSpot extends Building {
 
 		Collection<Player> players = p.getPeers(false);
 
-		int rand = (int) (Math.random() * 5);
+		int rand = (int) (Math.random() * 6);
 		int randMoney = (int) (Math.random() * 49 + 1) * 100;
 		switch (rand) {
 		case 0:
@@ -108,9 +108,7 @@ public class NewsSpot extends Building {
 				IO.alert(player.getName() + "获得 " + newCard.getName() + " 。");
 				player.addCard(newCard);
 			});
-
 			break;
-
 		case 5:
 			p.injure();
 			IO.alert("玩家" + p.getName() + "受伤，住院2天。");
