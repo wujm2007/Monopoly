@@ -110,6 +110,11 @@ public class NewsSpot extends Building {
 			});
 
 			break;
+
+		case 5:
+			p.injure();
+			IO.alert("玩家" + p.getName() + "受伤，住院2天。");
+			break;
 		}
 	}
 

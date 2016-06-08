@@ -15,6 +15,7 @@ public class StockMarket implements Serializable {
 		private String name;
 		private double price;
 		private int index;
+		private double fluctuation;
 
 		public int getIndex() {
 			return index;
@@ -36,6 +37,14 @@ public class StockMarket implements Serializable {
 
 		public String getName() {
 			return name;
+		}
+
+		public double getFluctuation() {
+			return fluctuation;
+		}
+
+		public void setFluctuation(double fluctuation) {
+			this.fluctuation = fluctuation;
 		}
 
 	}
@@ -71,6 +80,7 @@ public class StockMarket implements Serializable {
 	private List<Stock> stocks = new ArrayList<Stock>();
 
 	private Map<Player, HashMap<Stock, Integer>> acoounts = new HashMap<Player, HashMap<Stock, Integer>>();
+	private Map<Player, HashMap<Stock, Double>> costs = new HashMap<Player, HashMap<Stock, Double>>();
 	private Map<Stock, Double> rand = new HashMap<Stock, Double>();
 
 	private Game game;
@@ -104,12 +114,15 @@ public class StockMarket implements Serializable {
 		Vector<String> result = new Vector<String>();
 		result.addElement(s.getName());
 		result.addElement(String.format("%.2f", s.getPrice()));
-		result.addElement(new Integer(0).toString());
+		result.addElement(String.format("%.2f", 100 * (s.getFluctuation() - 1)) + "%");
 		game.getPlayers(true).forEach(p -> {
-			if ((acoounts.get(p) != null) && (acoounts.get(p).get(s) != null))
+			if ((acoounts.get(p) != null) && (acoounts.get(p).get(s) != null)) {
 				result.add(new Integer(acoounts.get(p).get(s)).toString());
-			else
-				result.add(new Integer(0).toString());
+				result.add(String.format("%.2f", costs.get(p).get(s)));
+			} else {
+				result.add("0");
+				result.add("0");
+			}
 		});
 		return result;
 	}
@@ -127,6 +140,12 @@ public class StockMarket implements Serializable {
 		return acoounts.get(p);
 	}
 
+	public Map<Stock, Double> getCosts(Player p) {
+		if (!this.costs.containsKey(p))
+			this.costs.put(p, new HashMap<Stock, Double>());
+		return costs.get(p);
+	}
+
 	// write off the stock account of a certain player (after he/she is broke)
 	public void writeoff(Player p) {
 		acoounts.remove(p);
@@ -138,12 +157,23 @@ public class StockMarket implements Serializable {
 		return getAccount(p).get(getStock(i));
 	}
 
+	public Double getPlayerCost(Player p, int i) {
+		if (!getCosts(p).containsKey(getStock(i)))
+			getCosts(p).put(getStock(i), 0D);
+		return getCosts(p).get(getStock(i));
+	}
+
 	public void addStock(Player p, int i, int n) {
 		Map<Stock, Integer> a = getAccount(p);
-		if (a.containsKey(getStock(i)))
-			a.put(getStock(i), getPlayerStock(p, i) + n);
-		else
+		Map<Stock, Double> c = getCosts(p);
+		Stock s = getStock(i);
+		if (a.containsKey(s)) {
+			a.put(s, getPlayerStock(p, i) + n);
+			c.put(s, (getPlayerStock(p, i) * this.getPlayerCost(p, i) + n * s.getPrice()) / (getPlayerStock(p, i) + n));
+		} else {
 			a.put(getStock(i), n);
+			c.put(s, s.getPrice());
+		}
 	}
 
 	public void reduceStock(Player p, int i, int n) {
@@ -156,6 +186,7 @@ public class StockMarket implements Serializable {
 			if (rand.get(s) == null)
 				rand.put(s, ((double) ((int) (Math.random() * 2001)) - 1000) / 10000 + 1);
 			s.setPrice(s.getPrice() * rand.get(s));
+			s.setFluctuation(rand.get(s));
 			rand.remove(s);
 		});
 	}
@@ -172,11 +203,14 @@ public class StockMarket implements Serializable {
 		p.getGame().io().stockOperation(p);
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public void trade(StockTradeOperation op, Player p) {
 		IOHelper IO = p.getGame().io();
 		StockMarket stockMarket = p.getGame().getStockMarket();
 		int i = op.getIndex();
 		int n = op.getNum();
+		if (op.getOpType() == StockTradeOpType.QUIT)
+			return;
 		int money = (int) (stockMarket.getStock(i).getPrice() * n);
 		switch (op.getOpType()) {
 		case BUY:
@@ -200,8 +234,6 @@ public class StockMarket implements Serializable {
 			} else {
 				IO.alert("股票不足。");
 			}
-			return;
-		case QUIT:
 			return;
 		}
 	}

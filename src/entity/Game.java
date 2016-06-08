@@ -199,7 +199,7 @@ public class Game implements Serializable {
 				this.date = (Date) is.readObject();
 				this.date.setGame(this);
 				this.gameFrame.setCurrentPlayer((Player) is.readObject());
-				this.gameFrame.init();
+				this.gameFrame.reinit();
 				is.close();
 				this.io().alert("读取成功");
 			} catch (Exception e) {

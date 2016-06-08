@@ -1,6 +1,5 @@
 package views;
 
-import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -15,12 +14,6 @@ public class EstatePanel extends CellPanel {
 	private transient ImageIcon imageIcon = new ImageIcon("./image/noowner0.png");
 	private transient Image image = imageIcon.getImage();
 
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		if (image != null)
-			g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-	}
-
 	public void refresh() {
 		if (this.estate.getOwner() != null) {
 			image = this.estate.getOwner().getEstateImage(this.estate.getLevel());
@@ -30,11 +23,22 @@ public class EstatePanel extends CellPanel {
 		paintImmediately(0, 0, this.getWidth(), this.getHeight());
 	}
 
-	public void setLocation(int x, int y) {
-		setBounds(35 * x - 30, 35 * y - 30, WIDTH * 30, HEIGHT * 30);
-	}
-
 	public void setEstate(Estate estate) {
 		this.estate = estate;
+	}
+
+	@Override
+	public Image getImage() {
+		return image;
+	}
+
+	@Override
+	public int getIconWidth() {
+		return WIDTH;
+	}
+
+	@Override
+	public int getIconHeight() {
+		return HEIGHT;
 	}
 }

@@ -11,6 +11,7 @@ import entity.buildings.Bank;
 import entity.buildings.CardSpot;
 import entity.buildings.EmptySpot;
 import entity.buildings.Estate;
+import entity.buildings.Hospital;
 import entity.buildings.LotterySpot;
 import entity.buildings.NewsSpot;
 import entity.buildings.Store;
@@ -20,6 +21,7 @@ import views.CardSpotPanel;
 import views.CellPanel;
 import views.DicePanel;
 import views.EstatePanel;
+import views.HospitalPanel;
 import views.NewsSpotPanel;
 import views.RoadPanel;
 import views.StorePanel;
@@ -28,14 +30,14 @@ import views.TicketSpotPanel;
 @SuppressWarnings("serial")
 public class MapGUI extends Map {
 
-	private static final String STR_MAP = "5水星街,1,5金星街,3,5火星街,2,5木星街,1,5土星街,5,7,7,7,7,7,7";
+	private static final String STR_MAP = "5水星街,1,5金星街,3,5火星街,2,5木星街,8,5土星街,5,7,7,7,7,7,7";
 
 	private static CellPanel cellPanels[] = { new EstatePanel(), new EstatePanel(), new EstatePanel(),
 			new EstatePanel(), new EstatePanel(), new StorePanel(), new EstatePanel(), new EstatePanel(),
 			new EstatePanel(), new EstatePanel(), new EstatePanel(), new NewsSpotPanel(), new EstatePanel(),
 			new EstatePanel(), new EstatePanel(), new EstatePanel(), new EstatePanel(), new BankPanel(),
 			new EstatePanel(), new EstatePanel(), new EstatePanel(), new EstatePanel(), new EstatePanel(),
-			new StorePanel(), new EstatePanel(), new EstatePanel(), new EstatePanel(), new EstatePanel(),
+			new HospitalPanel(), new EstatePanel(), new EstatePanel(), new EstatePanel(), new EstatePanel(),
 			new EstatePanel(), new CardSpotPanel(), new TicketSpotPanel(), new TicketSpotPanel(), new TicketSpotPanel(),
 			new TicketSpotPanel(), new TicketSpotPanel(), new TicketSpotPanel() };
 
@@ -91,6 +93,10 @@ public class MapGUI extends Map {
 				break;
 			case "7":
 				addCell(new Cell(this, count++, new TicketSpot()));
+				break;
+			case "8":
+				Hospital.setPostition(count);
+				addCell(new Cell(this, count++, Hospital.getInstance()));
 				break;
 			default:
 				int num = 0;

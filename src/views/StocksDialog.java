@@ -56,7 +56,9 @@ public class StocksDialog extends JFrame {
 		});
 		this.refresh();
 		this.add(src);
-		this.setSize(500, 300);
+		this.setTitle("股票交易");
+		this.setSize(800, 300);
+		this.setResizable(false);
 		this.setVisible(true);
 	}
 
@@ -68,7 +70,10 @@ public class StocksDialog extends JFrame {
 				add("涨跌");
 			}
 		};
-		players.stream().map(Player::getName).forEach(cols::add);
+		players.stream().forEach(p -> {
+			cols.add(p.getName() + "持股");
+			cols.add(p.getName() + "平均成本");
+		});
 		return new Vector<String>(cols);
 	}
 

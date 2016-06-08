@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 import entity.buildings.Estate;
+import entity.buildings.Hospital;
 import entity.cards.Card;
 import entity.cards.ControlDice;
 import entity.cards.RoadBlock;
@@ -46,6 +47,7 @@ public class Player implements Serializable {
 	private BankAccount account;
 	private Map map;
 	private boolean isBroke, isClockwise;
+	private int injuryCountdown = 0;
 
 	public boolean isClockwise() {
 		return isClockwise;
@@ -124,7 +126,7 @@ public class Player implements Serializable {
 		}
 	}
 
-	private void stop() {
+	public void stop() {
 		steps = 0;
 		if (timer != null)
 			timer.stop();
@@ -134,7 +136,6 @@ public class Player implements Serializable {
 				this.getGame().getDate().addDay();
 			this.getGame().getGameFrame().setDiceListner();
 		}
-
 	}
 
 	public int getPosition() {
@@ -316,5 +317,21 @@ public class Player implements Serializable {
 
 	public void removeCard(Card card) {
 		cards.remove(card);
+	}
+
+	public void injure() {
+		injuryCountdown = 2;
+		getMap().getCell(getPosition()).removePlayer(this);
+		getMap().getCell(Hospital.getPostition()).addPlayer(this);
+		setClockwise(!isClockwise);
+		stop();
+	}
+
+	public int getInjuryCountdown() {
+		return injuryCountdown;
+	}
+
+	public void injuryCountdown() {
+		this.getGame().io().alert(this.getName() + "还有" + (injuryCountdown--) + "天出院");
 	}
 }
