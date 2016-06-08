@@ -25,7 +25,7 @@ public class ControlDice extends Card {
 	public int act(Player p) {
 		IOHelper IO = p.getGame().io();
 		int steps;
-		while (((steps = IO.InputInt("请输入步数(1-6)：")) <= 0) || (steps > 6)) {
+		while (((steps = IO.inputInt("请输入步数(1-6)：")) <= 0) || (steps > 6)) {
 			IO.alert("请输入正确的步数！");
 		}
 		p.setSteps(steps);

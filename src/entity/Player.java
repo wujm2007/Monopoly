@@ -134,7 +134,7 @@ public class Player implements Serializable {
 				this.getGame().getDate().addDay();
 			this.getGame().getGameFrame().setDiceListner();
 		}
-		
+
 	}
 
 	public int getPosition() {
@@ -155,16 +155,17 @@ public class Player implements Serializable {
 
 	public void setDeposit(int m) {
 		this.account.setDeposit(m);
+		this.getGame().updateInfo();
 	}
 
 	public void addDeposit(int money) {
 		if (money > 0)
-			this.account.deposit += money;
+			setDeposit(getDeposit() + money);
 	}
 
 	public boolean costDeposit(int money) {
 		if ((money > 0) && (this.account.deposit >= money)) {
-			this.account.deposit -= money;
+			setDeposit(getDeposit() - money);
 			return true;
 		} else {
 			return false;
@@ -184,6 +185,7 @@ public class Player implements Serializable {
 
 	public void addCard(Card c) {
 		this.cards.add(c);
+		this.getGame().updateInfo();
 	}
 
 	public int getCash() {
@@ -192,16 +194,17 @@ public class Player implements Serializable {
 
 	public void setCash(int cash) {
 		this.cash = cash;
+		this.getGame().updateInfo();
 	}
 
 	public void addCash(int money) {
 		if (money > 0)
-			this.cash += money;
+			setCash(getCash() + money);
 	}
 
 	public boolean costCash(int money) {
 		if ((money > 0) && (this.cash >= money)) {
-			this.cash -= money;
+			setCash(getCash() - money);
 			return true;
 		} else {
 			return false;
@@ -214,6 +217,7 @@ public class Player implements Serializable {
 
 	public void setTickets(int tickets) {
 		this.tickets = tickets;
+		this.getGame().updateInfo();
 	}
 
 	public int cost(int cost) {

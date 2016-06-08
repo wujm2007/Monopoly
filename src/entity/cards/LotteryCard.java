@@ -26,12 +26,12 @@ public class LotteryCard extends Card {
 	public int act(Player p) {
 		IOHelper IO = p.getGame().io();
 		int n;
-		while (((n = IO.InputInt("请输入位置本月彩票中奖号码：")) <= 0) || (n > LotterySpot.LOTTERY_NUM)) {
+		while (((n = IO.inputInt("请输入位置本月彩票中奖号码：")) <= 0) || (n > LotterySpot.LOTTERY_NUM)) {
 			IO.alert("请输入正确的彩票号码！");
-			n = IO.InputInt("请输入位置本月彩票中奖号码：");
+			n = IO.inputInt("请输入位置本月彩票中奖号码：");
 		}
 		LotterySpot.setJackpot(n);
-		IO.showInfo("本月彩票中奖号码为：" + (LotterySpot.getJackpot() + 1) + "。");
+		IO.alert("本月彩票中奖号码为：" + (LotterySpot.getJackpot() + 1) + "。");
 		return 0;
 	}
 

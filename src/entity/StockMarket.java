@@ -10,13 +10,20 @@ import java.util.Vector;
 @SuppressWarnings("serial")
 public class StockMarket implements Serializable {
 
-	public class Stock implements Serializable {
+	public static class Stock implements Serializable {
+		private static int instanceCount = 1;
 		private String name;
 		private double price;
+		private int index;
+
+		public int getIndex() {
+			return index;
+		}
 
 		public Stock(String name, double price) {
 			this.name = name;
 			this.price = price;
+			this.index = instanceCount++;
 		}
 
 		public double getPrice() {
@@ -99,7 +106,7 @@ public class StockMarket implements Serializable {
 		result.addElement(String.format("%.2f", s.getPrice()));
 		result.addElement(new Integer(0).toString());
 		game.getPlayers(true).forEach(p -> {
-			if (acoounts.get(p) != null)
+			if ((acoounts.get(p) != null) && (acoounts.get(p).get(s) != null))
 				result.add(new Integer(acoounts.get(p).get(s)).toString());
 			else
 				result.add(new Integer(0).toString());
@@ -162,49 +169,40 @@ public class StockMarket implements Serializable {
 	}
 
 	public void stockOperation(Player p) {
+		p.getGame().io().stockOperation(p);
+	}
+
+	public void trade(StockTradeOperation op, Player p) {
 		IOHelper IO = p.getGame().io();
-		// print stock information
-		IO.showStocks(stocks);
-		IO.printStockAccount(getAccount(p));
-		if (IO.InputYN("是否进行股票交易")) {
-			StockTradeOperation op;
-			while ((op = IO.InputStockOp()).getOpType() != StockTradeOpType.QUIT) {
-				int i = op.getIndex();
-				int n = op.getNum();
-				if (getStock(i) == null) {
-					IO.alert("股票不存在！");
-					continue;
-				} else {
-					// calculate the value of the stocks
-					int money = (int) (getStock(i).getPrice() * n);
-					switch (op.getOpType()) {
-					case BUY:
-						if (p.getDeposit() + p.getCash() >= money) {
-							IO.alert("购入股票：" + getStock(i).getName() + " " + n + "股，花费" + money + "元。");
-							if (!p.costDeposit(money)) {
-								money -= p.getDeposit();
-								p.costDeposit(p.getDeposit());
-								p.costCash(money);
-							}
-							addStock(p, i, n);
-						} else {
-							IO.alert("金钱不足。");
-						}
-						break;
-					case SELL:
-						if (getPlayerStock(p, i) >= n) {
-							reduceStock(p, i, n);
-							p.addDeposit(money);
-							IO.alert("卖出股票：" + getStock(i).getName() + " " + n + "股，获得" + money + "元。");
-						} else {
-							IO.alert("股票不足。");
-						}
-						break;
-					default:
-						break;
-					}
+		StockMarket stockMarket = p.getGame().getStockMarket();
+		int i = op.getIndex();
+		int n = op.getNum();
+		int money = (int) (stockMarket.getStock(i).getPrice() * n);
+		switch (op.getOpType()) {
+		case BUY:
+			if (p.getDeposit() + p.getCash() >= money) {
+				IO.alert("购入股票：" + stockMarket.getStock(i).getName() + " " + n + "股，花费" + money + "元。");
+				if (!p.costDeposit(money)) {
+					money -= p.getDeposit();
+					p.costDeposit(p.getDeposit());
+					p.costCash(money);
 				}
+				stockMarket.addStock(p, i, n);
+			} else {
+				IO.alert("金钱不足。");
 			}
+			return;
+		case SELL:
+			if (stockMarket.getPlayerStock(p, i) >= n) {
+				stockMarket.reduceStock(p, i, n);
+				p.addDeposit(money);
+				IO.alert("卖出股票：" + stockMarket.getStock(i).getName() + " " + n + "股，获得" + money + "元。");
+			} else {
+				IO.alert("股票不足。");
+			}
+			return;
+		case QUIT:
+			return;
 		}
 	}
 

@@ -25,7 +25,7 @@ public class RoadBlock extends Card {
 	public int act(Player p) {
 		IOHelper IO = p.getGame().io();
 		int relativePos;
-		while (((relativePos = IO.InputInt("请输入位置((-8)-8)：")) < -8) || (relativePos > 8)) {
+		while (((relativePos = IO.inputInt("请输入位置((-8)-8)：")) < -8) || (relativePos > 8)) {
 			IO.alert("位置错误！");
 		}
 		p.getMap().getCell(p.getPosition()).getCellByRelativePos(relativePos).setBlocked();

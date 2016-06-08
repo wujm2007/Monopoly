@@ -15,7 +15,6 @@ public class Main {
 				try {
 					GameFrame window = new GameFrame(g);
 					g.setGameFrame(window);
-					window.setFrameVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

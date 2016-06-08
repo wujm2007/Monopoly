@@ -5,20 +5,23 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import biz_GUI.IOHelper_GUI;
 import entity.Game;
 import entity.Player;
 import entity.StockMarket;
+import entity.StockMarket.StockTradeOperation;
 
+@SuppressWarnings("serial")
 class StocksTableModel extends DefaultTableModel {
-	public StocksTableModel(Vector genertateData, Vector genertateColNames) {
-		super(genertateData, genertateColNames);
+	public StocksTableModel(Vector<Vector<String>> vector, Vector<String> genertateColNames) {
+		super(vector, genertateColNames);
 	}
 
 	@Override
@@ -27,13 +30,15 @@ class StocksTableModel extends DefaultTableModel {
 	}
 }
 
+@SuppressWarnings("serial")
 public class StocksDialog extends JFrame {
 	JTable table;
 
 	List<Player> players;
 	private StockMarket stockMarket;
 
-	public StocksDialog(Game g) {
+	public StocksDialog(Player p) {
+		Game g = p.getGame();
 		players = g.getPlayers(true);
 		stockMarket = g.getStockMarket();
 		table = new JTable();
@@ -41,9 +46,12 @@ public class StocksDialog extends JFrame {
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				String[] options = { "买入", "卖出" };
-				int response = JOptionPane.showOptionDialog(null, "请选择交易类型", "股票交易", JOptionPane.YES_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				int index = ((ListSelectionModel) e.getSource()).getMinSelectionIndex();
+				if (index != -1) {
+					StockTradeOperation op = ((IOHelper_GUI) g.io()).inputStockOp(stockMarket.getStock(index + 1));
+					stockMarket.trade(op, p);
+					refresh();
+				}
 			}
 		});
 		this.refresh();
@@ -52,13 +60,8 @@ public class StocksDialog extends JFrame {
 		this.setVisible(true);
 	}
 
-	public static void main(String args[]) {
-		Game g = new Game(2, false, null);
-		new StocksDialog(g);
-	}
-
-	public Vector genertateColNames() {
-		List cols = new ArrayList() {
+	public Vector<String> genertateColNames() {
+		List<String> cols = new ArrayList<String>() {
 			{
 				add("股票名");
 				add("成交价");
@@ -69,8 +72,8 @@ public class StocksDialog extends JFrame {
 		return new Vector<String>(cols);
 	}
 
-	public Vector genertateData() {
-		Vector dataVector = new Vector();
+	public Vector<Vector<String>> genertateData() {
+		Vector<Vector<String>> dataVector = new Vector<Vector<String>>();
 		stockMarket.getStocks().forEach(s -> {
 			dataVector.addElement(stockMarket.generateStackTableRow(s));
 		});

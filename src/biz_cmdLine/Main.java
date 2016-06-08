@@ -9,13 +9,10 @@ import entity.cards.Card;
 
 public class Main {
 	private static Game g;
-	private static IOHelper IO = IOHelper_cmdLine.getInstance();
+	private static IOHelper_cmdLine IO = IOHelper_cmdLine.getInstance();
 
 	public static void main(String args[]) {
 		g = new Game(2, false, IO);
-
-		// Debug.debug(g);
-
 		IO.showInfo("========================\t游   戏   开   始\t========================");
 		while (true) {
 			g.addDay();
@@ -44,7 +41,7 @@ public class Main {
 		IO.showInfo("7 - 不玩了！认输！");
 		IO.showInfo("8 - 进入股市");
 		int command;
-		while (((command = IO.InputInt("请输入")) < 0) || (command > 8)) {
+		while (((command = IO.inputInt("请输入")) < 0) || (command > 8)) {
 			IO.alert("请输入正确的操作代码。");
 		}
 		switch (command) {
@@ -130,9 +127,9 @@ public class Main {
 			selectionMap.put(i, entry.getKey());
 			System.out.println(i + ": " + entry.getKey().getName() + " x" + entry.getValue());
 		}
-		
+
 		int index;
-		if (((index = IO.InputInt("请输入您要使用的卡片编号(输入0退出)")) > 0) && (index <= i)) {
+		if (((index = IO.inputInt("请输入您要使用的卡片编号(输入0退出)")) > 0) && (index <= i)) {
 			if (selectionMap.get(index).act(p) == 0)
 				p.removeCard(selectionMap.get(index));
 			else
@@ -159,7 +156,7 @@ public class Main {
 
 	// print the information of a cell in certain steps
 	private static void showMsgInCertainSteps(Player p) {
-		int relativePos = IO.InputInt("请输入要查询的地点与您的相对步数");
+		int relativePos = IO.inputInt("请输入要查询的地点与您的相对步数");
 		Cell c = g.getMap().getCell(p.getPosition());
 		IO.showInfo(c.getCellByRelativePos(relativePos).getBuilding().getDescription());
 	}

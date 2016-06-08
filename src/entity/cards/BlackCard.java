@@ -25,11 +25,11 @@ public class BlackCard extends Card {
 	@Override
 	public int act(Player p) {
 		IOHelper IO = p.getGame().io();
-		int i = IO.InputInt("请输入股票代码：");
+		int i = IO.inputInt("请输入股票代码：");
 		StockMarket sm = p.getGame().getStockMarket();
 		while (sm.getStock(i) == null) {
 			IO.alert("股票代码错误！");
-			i = IO.InputInt("请输入股票代码：");
+			i = IO.inputInt("请输入股票代码：");
 		}
 		sm.limitDown(sm.getStock(i));
 		return 0;

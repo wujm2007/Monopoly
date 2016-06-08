@@ -90,7 +90,7 @@ public class Estate extends Building {
 	public void stay(Player p) {
 		IOHelper IO = p.getGame().io();
 		if (this.getOwner() == null) {
-			if (IO.InputYN("是否购买" + this.getName() + "？价格: " + this.getPrice() + "元。")) {
+			if (IO.inputYN("是否购买" + this.getName() + "？价格: " + this.getPrice() + "元。")) {
 				if (p.costCash(this.getPrice())) {
 					this.setOwner(p);
 					IO.alert("购买成功。");
@@ -100,7 +100,7 @@ public class Estate extends Building {
 			}
 		} else if (this.getOwner() == p) {
 			if (this.getLevel() < Estate.MAX_LEVEL - 1) {
-				if (IO.InputYN("是否升级" + this.getName() + "？价格: " + this.getUpgradeCost() + "元。")) {
+				if (IO.inputYN("是否升级" + this.getName() + "？价格: " + this.getUpgradeCost() + "元。")) {
 					if (p.costCash(this.getUpgradeCost())) {
 						this.upgrade();
 						IO.alert("成功升级至" + getLevel() + "级。");

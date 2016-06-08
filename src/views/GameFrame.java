@@ -55,6 +55,7 @@ public class GameFrame {
 		this.playerAvatar = new ImagePanel();
 		initialize();
 		this.setCurrentPlayer(game.getPlayers(false).iterator().next());
+		this.frame.setVisible(true);
 	}
 
 	public void refresh() {
@@ -276,9 +277,9 @@ public class GameFrame {
 		JMenuItem mntmCheckToll = new JMenuItem("指定地点过路费");
 		mntmCheckToll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int relativePos = game.io().InputInt("请输入相对位置:");
+				int relativePos = game.io().inputInt("请输入相对位置:");
 				Cell c = game.getMap().getCell(currentPlayer.getPosition());
-				game.io().showInfo(c.getCellByRelativePos(relativePos).getBuilding().getDescription());
+				game.io().alert(c.getCellByRelativePos(relativePos).getBuilding().getDescription());
 			}
 		});
 		mnCheck.add(mntmCheckPlayerInfo);
@@ -325,10 +326,6 @@ public class GameFrame {
 		// 音乐子菜单结束
 
 		// 菜单结束
-	}
-
-	public void setFrameVisible(boolean b) {
-		this.frame.setVisible(b);
 	}
 
 	public void changeImage(int step) {
