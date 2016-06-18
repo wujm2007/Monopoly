@@ -15,7 +15,7 @@ public abstract class IOHelper implements Serializable {
 	// return the integer input
 	public abstract int inputInt(String msg);
 
-	// Output the msg
+	// Pop an alert
 	public abstract void alert(String msg);
 
 	public abstract void showBankAccountInfo(Player p);

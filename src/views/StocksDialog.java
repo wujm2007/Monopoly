@@ -42,7 +42,7 @@ public class StocksDialog extends JFrame {
 		players = g.getPlayers(true);
 		stockMarket = g.getStockMarket();
 		table = new JTable();
-		JScrollPane src = new JScrollPane(table);
+		JScrollPane sp = new JScrollPane(table);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -55,7 +55,7 @@ public class StocksDialog extends JFrame {
 			}
 		});
 		this.refresh();
-		this.add(src);
+		this.add(sp);
 		this.setTitle("股票交易");
 		this.setSize(800, 300);
 		this.setResizable(false);

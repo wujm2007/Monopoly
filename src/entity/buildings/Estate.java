@@ -10,9 +10,7 @@ public class Estate extends Building {
 	private static final String TYPE = "房产";
 	private static final int MAX_LEVEL = 5;
 	private Player owner;
-	private int level;
-	private int price;
-	private int number;
+	private int level, price, number;
 	private String street;
 	private transient EstatePanel panel;
 

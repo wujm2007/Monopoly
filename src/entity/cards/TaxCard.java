@@ -32,8 +32,10 @@ public class TaxCard extends Card {
 				.collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 		if (!playersNear.isEmpty()) {
 			playersNear.forEach(p -> {
-				player.getGame().io().alert(p.getName() + "缴纳个人所得税:" + (int) (p.getDeposit() * 0.3));
-				p.costDeposit((int) (p.getDeposit() * 0.3));
+				if (p != player) {
+					player.getGame().io().alert(p.getName() + "缴纳个人所得税:" + (int) (p.getDeposit() * 0.3));
+					p.costDeposit((int) (p.getDeposit() * 0.3));
+				}
 			});
 			return 0;
 		}

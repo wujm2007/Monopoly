@@ -32,7 +32,7 @@ public class RoadPanel extends JPanel {
 
 	public void setPlayerAvatar(Player p) {
 		if (p == null)
-			image = null;
+			image = (new ImageIcon("./image/blank.png")).getImage();
 		else
 			image = p.getAvatar();
 		refresh();
@@ -44,7 +44,7 @@ public class RoadPanel extends JPanel {
 	}
 
 	public void clear() {
-		image = null;
+		image = (new ImageIcon("./image/blank.png")).getImage();
 		refresh();
 		cellPanel.refresh();
 	}

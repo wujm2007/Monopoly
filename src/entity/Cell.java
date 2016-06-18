@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import entity.buildings.Building;
 import views.RoadPanel;
@@ -11,7 +12,7 @@ public class Cell implements Serializable {
 	private Map map;
 	private int position;
 	private Building building;
-	private ArrayList<Player> players = new ArrayList<Player>();
+	private List<Player> players = new ArrayList<Player>();
 	private boolean blocked;
 	private RoadPanel roadPanel;
 

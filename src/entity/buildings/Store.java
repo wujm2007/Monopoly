@@ -58,8 +58,8 @@ public class Store extends Building {
 				int index = cards.indexOf(c);
 				info += "No." + (index + 1) + " " + c.getName() + ": \t" + c.getPrice() + "\n";
 			}
-			IO.alert(info + "您拥有" + p.getTickets() + "点券。");
-			int index = IO.inputInt("请输入您要购买的卡片编号: ") - 1;
+			info += "您拥有" + p.getTickets() + "点券。\n";
+			int index = IO.inputInt(info + "请输入您要购买的卡片编号: ") - 1;
 			if (index != -1)
 				trade(index, p);
 		}

@@ -1,21 +1,7 @@
 package entity;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import javax.swing.JPanel;
 
-import entity.buildings.Bank;
-import entity.buildings.CardSpot;
-import entity.buildings.EmptySpot;
-import entity.buildings.Estate;
-import entity.buildings.Hospital;
-import entity.buildings.LotterySpot;
-import entity.buildings.NewsSpot;
-import entity.buildings.Store;
-import entity.buildings.TicketSpot;
 import views.BankPanel;
 import views.CardSpotPanel;
 import views.CellPanel;
@@ -29,8 +15,6 @@ import views.TicketSpotPanel;
 
 @SuppressWarnings("serial")
 public class MapGUI extends Map {
-
-	private static final String STR_MAP = "5水星街,1,5金星街,3,5火星街,2,5木星街,8,5土星街,5,7,7,7,7,7,7";
 
 	private static CellPanel cellPanels[] = { new EstatePanel(), new EstatePanel(), new EstatePanel(),
 			new EstatePanel(), new EstatePanel(), new StorePanel(), new EstatePanel(), new EstatePanel(),
@@ -59,60 +43,8 @@ public class MapGUI extends Map {
 			{ 17, 9 }, { 15, 8 }, { 14, 8 }, { 14, 7 }, { 13, 7 }, { 12, 7 }, { 10, 7 }, { 10, 9 }, { 10, 10 },
 			{ 9, 10 }, { 8, 10 }, { 7, 10 }, { 5, 10 }, { 3, 9 }, { 2, 9 }, { 2, 8 }, { 2, 7 }, { 2, 6 }, { 2, 5 } };
 
-	public MapGUI(Game game) {
-		super(game);
-
-		BufferedReader r = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(STR_MAP.getBytes())));
-		String line = null;
-		try {
-			line = r.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] cells = line.split(",");
-		int count = 0;
-		for (String c : cells) {
-			switch (c) {
-			case "1":
-				addCell(new Cell(this, count++, new Store()));
-				break;
-			case "2":
-				addCell(new Cell(this, count++, new Bank()));
-				break;
-			case "3":
-				addCell(new Cell(this, count++, new NewsSpot()));
-				break;
-			case "4":
-				addCell(new Cell(this, count++, new LotterySpot()));
-				break;
-			case "5":
-				addCell(new Cell(this, count++, new CardSpot()));
-				break;
-			case "6":
-				addCell(new Cell(this, count++, new EmptySpot()));
-				break;
-			case "7":
-				addCell(new Cell(this, count++, new TicketSpot()));
-				break;
-			case "8":
-				Hospital.setPostition(count);
-				addCell(new Cell(this, count++, Hospital.getInstance()));
-				break;
-			default:
-				int num = 0;
-				try {
-					num = Integer.parseInt(c.substring(0, 1));
-				} catch (Exception e) {
-					break;
-				}
-				for (int i = 0; i < num; i++) {
-					Estate e = new Estate(c.substring(1), i + 1, 1.0);
-					addCell(new Cell(this, count, e));
-					count++;
-				}
-				break;
-			}
-		}
+	public MapGUI(Game game, String strMap) {
+		super(game, strMap);
 	}
 
 	public void init(JPanel mapPanel, DicePanel dicePanel) {
