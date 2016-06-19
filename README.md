@@ -7,7 +7,7 @@
 
 ## 如何运行？
 
-1. [下载](http://pan.baidu.com/s/1jHSn5u2)
+1. [下载](http://pan.baidu.com/s/1i5EsFmH)
 2. 解压
 3. 运行monopoly.jar
 
