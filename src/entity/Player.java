@@ -254,8 +254,10 @@ public class Player implements Serializable {
 		this.getGame().getStockMarket().writeoff(this);
 		this.isBroke = true;
 		this.getGame().io().alert(this.getName() + "破产。");
-		if (this.getPeers(false).isEmpty())
+		if (this.getPeers(false).size() == 1) {
+			this.getGame().io().alert("游戏结束，玩家" + this.getPeers(false).get(0) + "胜利！");
 			System.exit(0);
+		}
 	}
 
 	public boolean isBroke() {
